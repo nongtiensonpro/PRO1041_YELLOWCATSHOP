@@ -117,6 +117,27 @@ CREATE TABLE ChiTietSanPham
     NgaySua DATE,
     MoTa NVARCHAR(MAX)
 )
+
+
+
+SELECT 
+    ChiTietSanPham.Ma_SanPhamChiTiet,
+    ChiTietSanPham.Ten,
+    SUM(HoaDonChiTiet.Ma_SanPhamChiTiet) AS TongDoanhThu
+FROM
+    ChiTietSanPham
+    INNER JOIN HoaDonChiTiet ON ChiTietSanPham.Ma_SanPhamChiTiet= HoaDonChiTiet.Ma_SanPhamChiTiet
+GROUP BY
+    ChiTietSanPham.Ma_SanPhamChiTiet, ChiTietSanPham.Ten
+
+
+
+
+
+
+
+
+
 SELECT * FROM ChiTietSanPham
 
 DROP TABLE ChiTietSanPham
@@ -266,6 +287,14 @@ CREATE TABLE HoaDonChiTiet(
     TongTienCT INT
 )
 
+
+
+
+
+
+
+
+
 DROP TABLE HoaDonChiTiet
 DROP TABLE HoaDon
 SELECT * FROM HoaDon
@@ -285,25 +314,54 @@ SELECT * FROM ChiTietSanPham
 
 SELECT * FROM HoaDon WHERE 
 
-SELECT * FROM HoaDonChiTiet
+SELECT * FROM HoaDonChiTiet WHERE MaHoaDonChiTiet = 'HD101'
 
 
 SELECT * FROM HoaDon INNER JOIN HoaDonChiTiet ON HoaDon.MaHoaDon = HoaDonChiTiet.MaHoaDon WHERE HoaDonChiTiet.MaHoaDon = 'HD003'
 
 
+SELECT SUM(TongTienCT) AS TotalRevenue
+FROM HoaDonChiTiet
+JOIN ChiTietSanPham ON HoaDonChiTiet.MaSanPhamChiTiet = ChiTietSanPham.Ma_SanPhamChiTiet
+WHERE ChiTietSanPham.Ma_SanPhamChiTiet = 'MEO'
+
+
+SELECT ChiTietSanPham.Ten, SUM(HoaDonChiTiet.TongTienCT) AS TotalSales
+FROM HoaDonChiTiet
+JOIN ChiTietSanPham ON HoaDonChiTiet.MaSanPhamChiTiet = ChiTietSanPham.Ma_SanPhamChiTiet
+GROUP BY ChiTietSanPham.Ten
 
 
 
+SELECT COUNT(DISTINCT SDTKhachHang)
+FROM HoaDon
 
 
 
+SELECT YEAR(HoaDon.NgayTao) AS Year, 
+       MONTH(HoaDon.NgayTao) AS Month, 
+       ChiTietSanPham.Ten
+FROM HoaDonChiTiet
+JOIN ChiTietSanPham ON HoaDonChiTiet.MaSanPhamChiTiet = ChiTietSanPham.Ma_SanPhamChiTiet
+JOIN HoaDon ON HoaDonChiTiet.MaHoaDon = HoaDon.MaHoaDon
+WHERE YEAR(HoaDon.NgayTao) = '2024' AND MONTH(HoaDon.NgayTao) = '3'
+GROUP BY YEAR(HoaDon.NgayTao), MONTH(HoaDon.NgayTao), ChiTietSanPham.Ten;
 
 
+SELECT YEAR(HoaDon.NgayTao) AS Year, 
+       MONTH(HoaDon.NgayTao) AS Month, 
+       ChiTietSanPham.Ten, 
+       CAST(SUM(HoaDonChiTiet.SoLuong * HoaDonChiTiet.DonGia) AS DECIMAL(18, 2)) AS TotalSales
+FROM HoaDonChiTiet
+JOIN ChiTietSanPham ON HoaDonChiTiet.MaSanPhamChiTiet = ChiTietSanPham.Ma_SanPhamChiTiet
+JOIN HoaDon ON HoaDonChiTiet.MaHoaDon = HoaDon.MaHoaDon
+WHERE YEAR(HoaDon.NgayTao) = '2024' AND MONTH(HoaDon.NgayTao) = '3'
+GROUP BY YEAR(HoaDon.NgayTao), MONTH(HoaDon.NgayTao), ChiTietSanPham.Ten;
 
-
-
-
-
+SELECT YEAR(HoaDonChiTiet.NgayLapDH) AS Year, MONTH(HoaDonChiTiet.NgayLapDH) AS Month, ChiTietSanPham.Ten, SUM(HoaDonChiTiet.TongTienCT) AS TotalSales
+FROM HoaDonChiTiet
+JOIN ChiTietSanPham ON HoaDonChiTiet.MaSanPhamChiTiet = ChiTietSanPham.Ma_SanPhamChiTiet
+GROUP BY YEAR(HoaDonChiTiet.NgayTao), MONTH(HoaDonChiTiet.NgayLapDH), ChiTietSanPham.Ten
 
 -- drop Table Hang
 -- SELECT *
@@ -366,3 +424,46 @@ FROM ThongTinNhanVien
 -- FROM TaiKhoanNhanVien
 --     INNER JOIN ChucVuNhanVien ON ChucVuNhanVien.SoDienThoai= TaiKhoanNhanVien.SoDienThoai
 --     INNER JOIN ThongTinNhanVien ON ThongTinNhanVien.SoDienThoai = TaiKhoanNhanVien.SoDienThoai
+
+
+SELECT 
+    YEAR(HoaDon.NgayTao) AS Nam,
+    MONTH(HoaDon.NgayTao) AS Thang,
+    ChiTietSanPham.Ten,
+    SUM(HoaDonChiTiet.SoLuong) AS TongSoLuong,
+    SUM(HoaDonChiTiet.DonGia) AS TongDoanhThu
+FROM 
+    HoaDonChiTiet
+JOIN 
+    ChiTietSanPham ON HoaDonChiTiet.MaSanPhamChiTiet = ChiTietSanPham.Ma_SanPhamChiTiet
+JOIN 
+    HoaDon ON HoaDon.MaHoaDon = HoaDonChiTiet.MaHoaDon
+GROUP BY 
+    YEAR(HoaDon.NgayTao), 
+    MONTH(HoaDon.NgayTao), 
+    ChiTietSanPham.Ten
+ORDER BY 
+    Nam ASC, 
+    Thang ASC;
+
+
+
+SELECT 
+    YEAR(HoaDon.NgayTao) AS Nam,
+    ChiTietSanPham.Ten,
+    SUM(HoaDonChiTiet.SoLuong) AS TongSoLuong,
+    SUM(HoaDonChiTiet.DonGia) AS TongDoanhThu
+FROM 
+    HoaDonChiTiet
+JOIN 
+    ChiTietSanPham ON HoaDonChiTiet.MaSanPhamChiTiet = ChiTietSanPham.Ma_SanPhamChiTiet
+JOIN 
+    HoaDon ON HoaDon.MaHoaDon = HoaDonChiTiet.MaHoaDon
+WHERE 
+    YEAR(HoaDon.NgayTao) = 3
+GROUP BY 
+    YEAR(HoaDon.NgayTao), 
+    MONTH(HoaDon.NgayTao), 
+    ChiTietSanPham.Ten
+ORDER BY 
+    Nam ASC
