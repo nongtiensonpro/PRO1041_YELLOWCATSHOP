@@ -247,4 +247,39 @@ public class HoaDonController {
             }
         }
     }
+    
+    public boolean xoaHoaDonTheoMaGoc(String maHoaDon) {
+        System.out.println(maHoaDon);
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            String cauLenhTruyVan = "DELETE FROM [dbo].[HoaDon]\n" + "WHERE MaHoaDon = ?";
+            connection = DatabaseConnection.getConnection();
+            statement = connection.prepareStatement(cauLenhTruyVan);
+            statement.setString(1, maHoaDon);
+
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Số hàng đã bị xóa: " + rowsAffected);
+                return true;
+            } else {
+                System.out.println("Không có hàng nào được xóa.");
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

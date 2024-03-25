@@ -24,9 +24,7 @@ public class SanPhamController {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-
         try {
-
             connection = DatabaseConnection.getConnection();
             StringBuilder cauLenhThemSQL = new StringBuilder("INSERT INTO [dbo].[ChiTietSanPham]\n"
                     + "           ([Ma_SanPhamChiTiet]\n"
@@ -241,7 +239,7 @@ public class SanPhamController {
             String cauLenhTimKiemSQL = "SELECT * FROM [dbo].[ChiTietSanPham] WHERE [Ma_SanPhamChiTiet] LIKE ? OR Ten Like ?";
             statement = connection.prepareStatement(cauLenhTimKiemSQL);
             statement.setString(1, "%" + maSanPhamChiTiet + "%");
-            statement.setString(2,"%"+ maSanPhamChiTiet + "%");
+            statement.setString(2, "%" + maSanPhamChiTiet + "%");
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -324,8 +322,67 @@ public class SanPhamController {
         }
     }
     
+     public SanPhamModel timSanPhamChiTietChinhXac(String maSanPhamChiTiet) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+            String cauLenhTimKiemSQL = "SELECT * FROM [dbo].[ChiTietSanPham] WHERE [Ma_SanPhamChiTiet] = ?";
+            statement = connection.prepareStatement(cauLenhTimKiemSQL);
+            statement.setString(1, maSanPhamChiTiet);
+            resultSet = statement.executeQuery();
+                SanPhamModel sanPhamNew = null;
+            while (resultSet.next()) {
+                sanPhamNew = new SanPhamModel();
+                sanPhamNew.setMa_SanPhamChiTiet(resultSet.getString("Ma_SanPhamChiTiet"));
+                sanPhamNew.setMaSize(resultSet.getString("MaSize"));
+                sanPhamNew.setTen(resultSet.getString("Ten"));
+                sanPhamNew.setMaSanXuat(resultSet.getString("MaSanXuat"));
+                sanPhamNew.setMaMauSac(resultSet.getString("MaMauSac"));
+                sanPhamNew.setMaHang(resultSet.getString("MaHang"));
+                sanPhamNew.setAnhSanPham(resultSet.getBytes("AnhSanPham"));
+                sanPhamNew.setMaChatLieu(resultSet.getString("MaChatLieu"));
+                sanPhamNew.setGiaNhap(resultSet.getInt("GiaNhap"));
+                sanPhamNew.setGiaBan(resultSet.getInt("GiaBan"));
+                sanPhamNew.setSoLuong(resultSet.getInt("SoLuong"));
+                sanPhamNew.setTrangThai(resultSet.getBoolean("TrangThai"));
+                sanPhamNew.setNgayTao(resultSet.getDate("NgayTao"));
+                sanPhamNew.setNgaySua(resultSet.getDate("NgaySua"));
+                sanPhamNew.setMoTa(resultSet.getString("MoTa"));  
+            }
+            return sanPhamNew;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        return null;
+    }
     
-    public boolean truSoLuongSanPhamChiTiet(SanPhamModel  sp) {
+    public boolean truSoLuongSanPhamChiTiet(SanPhamModel sp) {
 
         Connection connection = null;
         PreparedStatement statement = null;
@@ -333,7 +390,7 @@ public class SanPhamController {
         try {
             connection = DatabaseConnection.getConnection();
             String sql = "UPDATE [dbo].[ChiTietSanPham]\n"
-                    + "SET [SoLuong] = ?\n"
+                    + "SET [SoLuong] = ? \n"
                     + "WHERE [Ma_SanPhamChiTiet] = ?";
             statement = connection.prepareStatement(sql);
             statement.setInt(1, sp.getSoLuong());
