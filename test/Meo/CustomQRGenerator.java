@@ -7,44 +7,48 @@ package Meo;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.imageio.ImageIO;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import java.util.HashMap;
+
 
 public class CustomQRGenerator {
 
     public static void main(String[] args) {
-        String recipientInfo = "your_recipient@example.com"; // Change the recipient information
-        double amountToPay = 100.0; // Change the amount to pay
+        String recipientInfo = "your_recipient@example.com"; // Thay đổi thông tin người nhận
+        double amountToPay = 100.0; // Thay đổi số tiền
 
         try {
             String qrCodeFilePath = generateCustomQR(recipientInfo, amountToPay);
-            System.out.println("The custom QR code has been generated for $" + amountToPay + " for " + recipientInfo);
-            System.out.println("The custom QR code is saved as: " + qrCodeFilePath);
+            System.out.println("Mã QR tùy chỉnh đã được tạo cho $" + amountToPay + " cho " + recipientInfo);
+            System.out.println("Lưu mã QR tại: " + qrCodeFilePath);
         } catch (IOException | WriterException e) {
             e.printStackTrace();
         }
     }
 
     public static String generateCustomQR(String recipient, double amount) throws IOException, WriterException {
-        String qrCodeData = "Recipient: " + recipient + "\nAmount: $" + amount;
-        int size = 250; // Change the QR code size
+        String qrCodeData = "Người nhận: " + recipient + "\nSố tiền: $" + amount;
+        int size = 250; // Thay đổi kích thước mã QR
 
-        // Set the QR code parameters
-        HashMap<EncodeHintType, Object> hints = new HashMap<>();
+        // Đặt các thông số cho mã QR
+        Map<EncodeHintType, Object> hints = new HashMap<>();
         hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
         hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
 
-        // Create the QR code
+        // Tạo mã QR
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeData, BarcodeFormat.QR_CODE, size, size, hints);
 
-        // Convert the BitMatrix to a BufferedImage
+        // Tạo BufferedImage từ BitMatrix
         BufferedImage qrImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
@@ -52,8 +56,8 @@ public class CustomQRGenerator {
             }
         }
 
-        // Save the QR code image to a file
-        String qrCodeFilePath = "custom_qr.png"; // Change the output file path
+        // Lưu hình ảnh vào tệp
+        String qrCodeFilePath = "custom_qr.png"; // Thay đổi đường dẫn tệp đầu ra
         ImageIO.write(qrImage, "png", new File(qrCodeFilePath));
 
         return qrCodeFilePath;
