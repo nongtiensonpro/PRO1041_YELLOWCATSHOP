@@ -43,11 +43,13 @@ public class Menu extends JPanel {
         addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.DASHBOARD, "Trang Chủ"));
         addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.ARROW_DROP_UP, "Khách hàng"));
         addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.FIRST_PAGE, "Bán hàng"));
-        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.FIRST_PAGE, "Quản lý sản phẩm"));
+        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.ANDROID, "Quản lý sản phẩm"));
+        addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.CHECK_BOX_OUTLINE_BLANK, "Hóa đơn"));
         if (tknvif.isVaiTro()) {
             addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.PHONE_IPHONE, "Quản Lý Nhân Viên"));
             addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.SETTINGS_INPUT_COMPOSITE, "Quản Lý Mã Xác Thực"));
             addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.ADD_A_PHOTO,"Khuyến mãi"));
+            addMenuItem(new ModelMenuItem(GoogleMaterialDesignIcon.ACCESSIBLE,"Thống kê"));
         }
 
     }

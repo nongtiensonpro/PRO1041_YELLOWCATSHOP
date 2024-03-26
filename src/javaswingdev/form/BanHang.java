@@ -880,6 +880,7 @@ public class BanHang extends javax.swing.JPanel {
         // TODO add your handling code here:
         boolean luaChon = MsgBox.confirm(this, "Xác nhận thanh toán hóa đơn");
         if (luaChon) {
+                             hoaDonController.capNhatHoaDonTreo(layGiaTriHoaDon());
             boolean ketQua = hoaDonController.capNhatHoaDonThanhToanHoaDon(layGiaTriHoaDon());
             if (ketQua) {
                 HoaDonModel donModel = layGiaTriHoaDon();
@@ -890,7 +891,10 @@ public class BanHang extends javax.swing.JPanel {
                 } else {
                     soTienGiam = Integer.parseInt(txtGiaTriGiamGia.getText());
                 }
-                createInvoicePdf(listHoaDonChiTietTheoMa, donModel, soTienGiam);
+                boolean luaChonIn = MsgBox.confirm(this, "Bạn có muốn in hoa đơn");
+                if (luaChonIn) {
+                    createInvoicePdf(listHoaDonChiTietTheoMa, donModel, soTienGiam);
+                }
                 MsgBox.alert(this, "Thanh toán và lưu hóa đơn thành công !");
                 listHoaDonTreo = hoaDonController.timKiemTatCaHoaTreo();
                 hienThiLenHoaDonTreo();

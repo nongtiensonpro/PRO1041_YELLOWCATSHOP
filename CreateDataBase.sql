@@ -297,7 +297,7 @@ CREATE TABLE HoaDonChiTiet(
 
 DROP TABLE HoaDonChiTiet
 DROP TABLE HoaDon
-SELECT * FROM HoaDon
+SELECT * FROM HoaDon WHERE SDTKhachHang = '0944214116'
 
 INSERT INTO HoaDon ( MaHoaDon, SDTNhanVien, SDTKhachHang,MaKhuyenMai, TongTien, NgayTao, NgaySua, TrangThai, GhiChu)
 VALUES ( 'HD001', '0944214116', '0944214116','KM001', 0, '2023-03-21', '2023-03-21', 1, 'Hóa đơn đầu tiên'),
@@ -358,10 +358,7 @@ JOIN HoaDon ON HoaDonChiTiet.MaHoaDon = HoaDon.MaHoaDon
 WHERE YEAR(HoaDon.NgayTao) = '2024' AND MONTH(HoaDon.NgayTao) = '3'
 GROUP BY YEAR(HoaDon.NgayTao), MONTH(HoaDon.NgayTao), ChiTietSanPham.Ten;
 
-SELECT YEAR(HoaDonChiTiet.NgayLapDH) AS Year, MONTH(HoaDonChiTiet.NgayLapDH) AS Month, ChiTietSanPham.Ten, SUM(HoaDonChiTiet.TongTienCT) AS TotalSales
-FROM HoaDonChiTiet
-JOIN ChiTietSanPham ON HoaDonChiTiet.MaSanPhamChiTiet = ChiTietSanPham.Ma_SanPhamChiTiet
-GROUP BY YEAR(HoaDonChiTiet.NgayTao), MONTH(HoaDonChiTiet.NgayLapDH), ChiTietSanPham.Ten
+
 
 -- drop Table Hang
 -- SELECT *
@@ -467,3 +464,22 @@ GROUP BY
     ChiTietSanPham.Ten
 ORDER BY 
     Nam ASC
+
+
+SELECT 
+    HD.SDTKhachHang,
+    COUNT(DISTINCT HD.MaHoaDon) AS SoDonDaMua,
+    SUM(HDCT.TongTienCT) AS TongTienDaMua,
+    MAX(HD.NgayTao) AS NgayMuaGanNhat
+FROM 
+    HoaDon HD
+INNER JOIN 
+    HoaDonChiTiet HDCT ON HD.MaHoaDon = HDCT.MaHoaDon
+WHERE 
+    HD.TrangThai = 1
+GROUP BY 
+    HD.SDTKhachHang;
+
+
+
+    Select * FROM HoaDon

@@ -7,9 +7,11 @@ import static javaswingdev.form.DangNhap.Ma_NhanVienstatic;
 import javaswingdev.form.FormKhachHang;
 import javaswingdev.form.FormKhuyenMai;
 import javaswingdev.form.Form_Dashboard;
+import javaswingdev.form.HoaDon;
 import javaswingdev.form.QuanLyMaXacThuc;
 import javaswingdev.form.QuanLyNhanVien;
 import javaswingdev.form.QuanLySanPhamJPanelNew;
+import javaswingdev.form.ThongKee;
 import javaswingdev.menu.EventMenuSelected;
 import model.TaiKhoanNhanVIenFull;
 
@@ -49,16 +51,21 @@ public class MainTaoFrom extends javax.swing.JFrame {
                         showForm(new QuanLySanPhamJPanelNew());
                     }
                     if (index == 4 && indexSubMenu == 0) {
+                        showForm(new HoaDon());
+                    }
+                    if (index == 5 && indexSubMenu == 0) {
                         
                         showForm(new QuanLyNhanVien());
                     }
-                    if(index == 5 && indexSubMenu == 0){
+                    if(index == 6 && indexSubMenu == 0){
                         showForm(new QuanLyMaXacThuc());
                     }
-                    if(index == 6 && indexSubMenu == 0){
+                    if(index == 7 && indexSubMenu == 0){
                         showForm(new FormKhuyenMai());
                     }
-                    
+                    if(index == 8 && indexSubMenu == 0){
+                        showForm(new ThongKee());
+                    }
                 }
             }
         });
