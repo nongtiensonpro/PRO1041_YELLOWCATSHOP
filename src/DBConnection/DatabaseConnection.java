@@ -19,7 +19,7 @@ public class DatabaseConnection {
 
         dataSource.setUser("sa");
         dataSource.setDatabaseName("SD18312_TEAM_6");
-        dataSource.setPassword("Ok1234@4321");//Đổi mật khẩu ở đây nếu cần
+        dataSource.setPassword("123456");//Đổi mật khẩu ở đây nếu cần
         dataSource.setPortNumber(1433);//Nếu kết nỗi lỗi có thể do cổng 1433 đóng
         dataSource.setEncrypt(false);
         Connection conn = null;

@@ -6,6 +6,7 @@ package javaswingdev.form;
 
 import javaswingdev.card.ModelCard;
 import controller.ChatLieuController;
+import controller.ExcelExporter;
 import controller.HangController;
 import controller.MauSacController;
 import controller.NhaSanXuatController;
@@ -21,6 +22,7 @@ import java.util.List;
 import javaswingdev.GoogleMaterialDesignIcon;
 import static javaswingdev.form.DangNhap.Ma_NhanVienstatic;
 import static javaswingdev.main.MainTaoFrom.taiKhoanNhanVienControllerStatic;
+import static controller.ExcelExporter.xuatFileExcelDanhSachSanPham;
 import javaswingdev.menu.ModelMenuItem;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
@@ -290,6 +292,7 @@ public class QuanLySanPhamJPanelNew extends javax.swing.JPanel {
         rdoKhongHoatDong = new javax.swing.JRadioButton();
         rdoHoatDong = new javax.swing.JRadioButton();
         jLabel13 = new javax.swing.JLabel();
+        jButton10 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblBangSanPham = new javaswingdev.swing.table.Table();
@@ -676,6 +679,13 @@ public class QuanLySanPhamJPanelNew extends javax.swing.JPanel {
 
         jLabel13.setText("Trạng thái");
 
+        jButton10.setText("Xuất EXCEL");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -692,7 +702,9 @@ public class QuanLySanPhamJPanelNew extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnXoa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnLamMoi))
+                        .addComponent(btnLamMoi)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton10))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(55, 55, 55)
                         .addComponent(jLabel6)
@@ -748,7 +760,8 @@ public class QuanLySanPhamJPanelNew extends javax.swing.JPanel {
                             .addComponent(btnThem)
                             .addComponent(btnSua)
                             .addComponent(btnXoa)
-                            .addComponent(btnLamMoi))
+                            .addComponent(btnLamMoi)
+                            .addComponent(jButton10))
                         .addGap(20, 20, 20))))
         );
 
@@ -1049,6 +1062,11 @@ public class QuanLySanPhamJPanelNew extends javax.swing.JPanel {
         MauSac mauSac = new MauSac();
         mauSac.setVisible(true);
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        // TODO add your handling code here:
+        xuatFileExcelDanhSachSanPham(listSanPhamNew);
+    }//GEN-LAST:event_jButton10ActionPerformed
     private SanPhamModel sanPhamMoiTuText() {
         SanPhamModel spm = new SanPhamModel();
         spm.setMa_SanPhamChiTiet(txtMaSanPham.getText());
@@ -1084,6 +1102,7 @@ public class QuanLySanPhamJPanelNew extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cboMauSac;
     private javax.swing.JComboBox<String> cboNhaSanXuat;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

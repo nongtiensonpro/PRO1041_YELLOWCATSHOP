@@ -730,8 +730,8 @@ public class SuaSanPhamJFrame extends javax.swing.JFrame {
         SanPhamModel sanPhamNew1 = new SanPhamModel();
         sanPhamNew1.setMa_SanPhamChiTiet(txtMaSanPham.getText());
         sanPhamNew1.setTen(txtTenSanPham.getText());
-        sanPhamNew1.setGiaNhap(Double.valueOf(txtGiaNhap.getText()));
-        sanPhamNew1.setGiaBan(Double.valueOf(txtGiaBan.getText()));
+        sanPhamNew1.setGiaNhap(Integer.valueOf(txtGiaNhap.getText()));
+        sanPhamNew1.setGiaBan(Integer.valueOf(txtGiaBan.getText()));
         sanPhamNew1.setMaMauSac(mauSacController.timkiemMauSac().get(cboMauSac.getSelectedIndex()).getMaMauSac());
         sanPhamNew1.setMaHang(hangController.timkiemHang().get(cboHang.getSelectedIndex()).getMaHang());
         sanPhamNew1.setSoLuong(Integer.valueOf(txtSoLuong.getText()));
