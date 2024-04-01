@@ -483,3 +483,8 @@ GROUP BY
 
 
     Select * FROM HoaDon
+
+    SELECT * FROM HoaDonChiTiet WHERE MaHoaDonChiTiet  like 'HDCT10215031032024'
+
+    SELECT * FROM HoaDon INNER JOIN HoaDonChiTiet 
+                    ON HoaDon.MaHoaDon = HoaDonChiTiet.MaHoaDon WHERE HoaDonChiTiet.MaHoaDon = 'HDCT10215031032024'

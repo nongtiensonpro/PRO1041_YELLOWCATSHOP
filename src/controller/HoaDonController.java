@@ -165,7 +165,7 @@ public class HoaDonController {
         }
         return result;
     }
-    
+
     public boolean capNhatHoaDonThanhToanHoaDon(HoaDonModel hoaDonModel) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -204,17 +204,16 @@ public class HoaDonController {
             }
         }
     }
-    
-    
-    public boolean themHoaDonMoi (HoaDonModel hoaDonModel){
+
+    public boolean themHoaDonMoi(HoaDonModel hoaDonModel) {
         HoaDonModel donModel = null;
-         Connection connection = null;
+        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            String cauLenhThem="INSERT INTO HoaDon ( MaHoaDon, SDTNhanVien, SDTKhachHang,MaKhuyenMai, TongTien, NgayTao, NgaySua, TrangThai, GhiChu)"
+            String cauLenhThem = "INSERT INTO HoaDon ( MaHoaDon, SDTNhanVien, SDTKhachHang,MaKhuyenMai, TongTien, NgayTao, NgaySua, TrangThai, GhiChu)"
                     + "VALUES(?,?,?,?,?,?,?,?,?)";
-             connection = DatabaseConnection.getConnection();
+            connection = DatabaseConnection.getConnection();
             statement = connection.prepareCall(cauLenhThem);
             statement.setString(1, hoaDonModel.getMaHoaDon());
             statement.setString(2, hoaDonModel.getSoDienThoaiNV());
@@ -247,7 +246,7 @@ public class HoaDonController {
             }
         }
     }
-    
+
     public boolean xoaHoaDonTheoMaGoc(String maHoaDon) {
         System.out.println(maHoaDon);
         Connection connection = null;
@@ -282,4 +281,64 @@ public class HoaDonController {
             }
         }
     }
+
+    public List<HoaDonModel> timKiemTatCaHoaDonTheoMa(String maHoaDon) {
+        HoaDonModel hoaDonModel = null;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<HoaDonModel> listHoaDonModel = new ArrayList<>();
+        try {
+            String cauLenhTimKiem = "SELECT * FROM HoaDon";
+            if (maHoaDon != null && !maHoaDon.isEmpty()) {
+                cauLenhTimKiem += " WHERE MaHoaDon = ?";
+            }
+            connection = DatabaseConnection.getConnection();
+            statement = connection.prepareCall(cauLenhTimKiem);
+            if (maHoaDon != null && !maHoaDon.isEmpty()) {
+                statement.setString(1, maHoaDon);
+            }
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                hoaDonModel = new HoaDonModel();
+                hoaDonModel.setMaHoaDon(resultSet.getString("MaHoaDon"));
+                hoaDonModel.setSoDienThoaiNV(resultSet.getString("SDTNhanVien"));
+                hoaDonModel.setSoDienThoaiKH(resultSet.getString("SDTKhachHang"));
+                hoaDonModel.setMaKhuyenMai(resultSet.getString("MaKhuyenMai"));
+                hoaDonModel.setTongTien(resultSet.getInt("TongTien"));
+                hoaDonModel.setNgayTao(resultSet.getDate("NgayTao"));
+                hoaDonModel.setNgaySua(resultSet.getDate("NgaySua"));
+                hoaDonModel.setTrangThai(resultSet.getBoolean("TrangThai"));
+                hoaDonModel.setGhiChu(resultSet.getString("GhiChu"));
+                listHoaDonModel.add(hoaDonModel);
+            }
+            return listHoaDonModel;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
+
 }

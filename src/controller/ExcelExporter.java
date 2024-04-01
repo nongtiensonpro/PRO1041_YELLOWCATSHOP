@@ -1,5 +1,7 @@
 package controller;
 
+import java.awt.Desktop;
+import java.io.File;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
@@ -67,6 +69,17 @@ public class ExcelExporter {
         try (FileOutputStream fileOut = new FileOutputStream("Danh sách sản phẩm " + formattedDate + ".xls")) {
             workbook.write(fileOut);
             System.out.println("File Excel đã được tạo và lưu thành công!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            // Mở file Excel sau khi đã được tạo và lưu
+            File file = new File("Danh sách sản phẩm " + formattedDate + ".xls");
+            if (file.exists()) {
+                Desktop.getDesktop().open(file);
+            } else {
+                System.out.println("Không thể tìm thấy tập tin Excel.");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

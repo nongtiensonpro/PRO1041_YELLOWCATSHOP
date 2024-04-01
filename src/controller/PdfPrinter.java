@@ -2,6 +2,8 @@ package controller;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+import java.awt.Desktop;
+import java.io.File;
 import model.ChiTietHoaDonModel;
 import model.HoaDonModel;
 
@@ -115,6 +117,19 @@ public class PdfPrinter {
             document.close();
 
             System.out.println("Hóa đơn đã được tạo thành công tại " + hoaDonModel.getMaHoaDon().trim() + ".pdf");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+         try {
+            // Phần code để tạo và lưu hóa đơn đã được bạn viết ở trên
+
+            // Mở hóa đơn PDF sau khi đã được tạo và lưu
+            File file = new File(hoaDonModel.getMaHoaDon().trim() + ".pdf");
+            if (file.exists()) {
+                Desktop.getDesktop().open(file);
+            } else {
+                System.out.println("Không thể tìm thấy tập tin hóa đơn.");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

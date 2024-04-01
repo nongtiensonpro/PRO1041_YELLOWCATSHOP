@@ -670,8 +670,8 @@ public class ThemSanPhamJFrame extends javax.swing.JFrame {
 
         sanPhamNew.setMa_SanPhamChiTiet(txtMaSanPham.getText());
         sanPhamNew.setTen(txtTenSanPham.getText());
-        sanPhamNew.setGiaNhap(Double.valueOf(txtGiaNhap.getText()));
-        sanPhamNew.setGiaBan(Double.valueOf(txtGiaBan.getText()));
+//        sanPhamNew.setGiaNhap(Double.valueOf(txtGiaNhap.getText()));
+//        sanPhamNew.setGiaBan(Double.valueOf(txtGiaBan.getText()));
         sanPhamNew.setMaMauSac(mauSacController.timkiemMauSac().get(cboMauSac.getSelectedIndex()).getMaMauSac());
         sanPhamNew.setMaHang(hangController.timkiemHang().get(cboHang.getSelectedIndex()).getMaHang());
         sanPhamNew.setSoLuong(Integer.valueOf(txtSoLuong.getText()));

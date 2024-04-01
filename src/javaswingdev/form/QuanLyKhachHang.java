@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import model.KhachHangModel;
 import view_2.SuaKhachHang;
 import view_2.ThemKhachHang;
+import static javaswingdev.form.BanHang.soDienThoaiKhachHang;
 
 /**
  *
@@ -207,6 +208,7 @@ public class QuanLyKhachHang extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(tblKhachHang.getSelectedRow()>-1){
             khachHangModelStatic = listKhanhHang.get(tblKhachHang.getSelectedRow());
+            soDienThoaiKhachHang = (String) tblKhachHang.getValueAt(tblKhachHang.getSelectedRow(), 2);
             SuaKhachHang suaKhachHang = new SuaKhachHang();
             suaKhachHang.setVisible(true);
         }
