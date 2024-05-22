@@ -123,7 +123,7 @@ public class ThemSanPhamJFrame extends javax.swing.JFrame {
             int khaDung = 0;
             int khongKhaDung = 0;
             for (HangModel hangModel : danhSachHang) {
-                if (hangModel.getTrangThai()) {
+                if (hangModel.isTrangThai()) {
                     khaDung++;
                 } else {
                     khongKhaDung++;
@@ -143,7 +143,7 @@ public class ThemSanPhamJFrame extends javax.swing.JFrame {
             int khaDung = 0;
             int khongKhaDung = 0;
             for (NhaSanXuatModel nhaSanXuatModel : listNhaSanXuat) {
-                if (nhaSanXuatModel.getTrangThai()) {
+                if (nhaSanXuatModel.isTrangThai()) {
                     khaDung++;
                 } else {
                     khongKhaDung++;
@@ -163,7 +163,7 @@ public class ThemSanPhamJFrame extends javax.swing.JFrame {
             int khaDung = 0;
             int khongKhaDung = 0;
             for (MauSacModel mauSacModel : listMauSac) {
-                if (mauSacModel.getTrangThai()) {
+                if (mauSacModel.isTrangThai()) {
                     khaDung++;
                 } else {
                     khongKhaDung++;

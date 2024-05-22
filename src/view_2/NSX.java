@@ -39,7 +39,7 @@ public class NSX extends javax.swing.JFrame {
                 hangModel.getNgayTao(),
                 hangModel.getNgaySua(),
                 hangModel.getMoTa(),
-                hangModel.getTrangThai() ? "Hoạt động" : "Không hoạt động"
+                hangModel.isTrangThai()? "Hoạt động" : "Không hoạt động"
             });
         }
     }
@@ -231,7 +231,7 @@ public class NSX extends javax.swing.JFrame {
                     hangModel.getNgayTao(),
                     hangModel.getNgaySua(),
                     hangModel.getMoTa(),
-                    hangModel.getTrangThai() ? "Hoạt động" : "Không hoạt động"
+                    hangModel.isTrangThai()? "Hoạt động" : "Không hoạt động"
                 });
             }
         }

@@ -5,11 +5,15 @@
 package javaswingdev.form;
 
 import controller.KhachHangController;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import model.KhachHangModel;
 import utilities.MsgBox;
+import static javaswingdev.form.BanHang.soDienThoaiKhachHang;
+import model.HoaDonModel;
 
 /**
  *
@@ -92,6 +96,8 @@ public class FormKhachHang extends javax.swing.JPanel {
 
         jLabel8.setText("Mã khách hàng");
 
+        txtMakhachhang.setEnabled(false);
+
         jLabel3.setText("Ngày sinh");
 
         jLabel2.setText("Tên khách hàng");
@@ -153,7 +159,7 @@ public class FormKhachHang extends javax.swing.JPanel {
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(296, 296, 296))
+                .addGap(208, 208, 208))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -278,8 +284,8 @@ public class FormKhachHang extends javax.swing.JPanel {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(96, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -287,18 +293,19 @@ public class FormKhachHang extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(20, 20, 20))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(388, 388, 388)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(388, 388, 388)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -324,7 +331,7 @@ public class FormKhachHang extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(602, 602, 602))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -336,6 +343,7 @@ public class FormKhachHang extends javax.swing.JPanel {
             txtMakhachhang.setText(khachHangModel.getMa_KhachHang());
             txtDiachi.setText(khachHangModel.getDiaChi());
             txtSDT.setText(khachHangModel.getSoDienThoai());
+            soDienThoaiKhachHang = khachHangModel.getSoDienThoai();
             txtNgaysinh.setDate(khachHangModel.getNgaySinh());
             if (khachHangModel.isGioiTinh()) {
                 rdoNam.setSelected(true);
@@ -353,12 +361,19 @@ public class FormKhachHang extends javax.swing.JPanel {
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
         if(checktrong()){
+            for (KhachHangModel khachHangModel : danhSachkhachhang) {
+                if(taodulieumoi().getSoDienThoai().equals(khachHangModel.getSoDienThoai())){
+                    MsgBox.alert(this, "Đã trùng SDT mời nhập SDT khác!");
+                    return;
+                }
+            }
             boolean ketqua = khachHangController.themKhachHang(taodulieumoi());
             if(ketqua){
                 MsgBox.alert(this, "Bạn đã thêm thành công");
+                danhSachkhachhang = khachHangController.timKiemTatCaKhachHang();
                 loadFormKhachHang();
             }else{
-                MsgBox.alert(this, "Bạn đã thêm không thành công");
+                MsgBox.alert(this, "Đã trùng mã mời bạn nhập mã khác    ");
             }
         }
     }//GEN-LAST:event_btnThemActionPerformed
@@ -366,9 +381,13 @@ public class FormKhachHang extends javax.swing.JPanel {
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
         if(tblBangKhachHang.getSelectedRow()>-1){
-            boolean luachon = MsgBox.confirm(this, "Bạn có muốm sửa không?");
+            
+            boolean luachon = MsgBox.confirm(this, "Bạn có muốn sửa không?");
+            if(checktrong()) {
+                
+            
             if(luachon){
-                boolean ketqua = khachHangController.capNhatThongTinKhachHang(taodulieumoi());
+                boolean ketqua = khachHangController.capNhatThongTinKhachHang(taodulieumoi2());
                 if(ketqua){
                 MsgBox.alert(this, "Bạn đã sửa thành công");
                 danhSachkhachhang = khachHangController.timKiemTatCaKhachHang();
@@ -377,13 +396,17 @@ public class FormKhachHang extends javax.swing.JPanel {
                 MsgBox.alert(this, "Bạn đã sửa không thành công");
             }
             }
+            }
+        }else{
+            MsgBox.alert(this, "Mời bạn chọn dòng cần sửa");
         }
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnTimkiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimkiemActionPerformed
         // TODO add your handling code here:
         if(txtTimkiemkhachhang.getText().trim().equals("")){
-            
+            MsgBox.alert(this, "Mời nhập SDT Khách hàng ");
+                    
         }else{
             danhSachkhachhang = khachHangController.timKiemKhachHangTheoSDT(txtTimkiemkhachhang.getText());
             loadFormKhachHang();
@@ -396,14 +419,36 @@ private void lammoiForm(){
     txtTenkhachhang.setText("");
     java.time.LocalDate ngaySuaLocalDate = java.time.LocalDate.now();
         txtNgaysinh.setDate(java.sql.Date.valueOf(ngaySuaLocalDate));
+        txtTimkiemkhachhang.setText("");
 }
     private void btnLammoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLammoiActionPerformed
         // TODO add your handling code here:
+        danhSachkhachhang = khachHangController.timKiemTatCaKhachHang();
         lammoiForm();
+        loadFormKhachHang();
     }//GEN-LAST:event_btnLammoiActionPerformed
 
     private KhachHangModel taodulieumoi() {
         KhachHangModel hangModel = new KhachHangModel();
+        Date currentTime = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("ssmmHHddMMyyyy");
+            String formattedTime = formatter.format(currentTime);
+        hangModel.setMa_KhachHang("KH" + formattedTime);
+        hangModel.setTenKhachHang(txtTenkhachhang.getText());
+        hangModel.setDiaChi(txtDiachi.getText());
+        hangModel.setSoDienThoai(txtSDT.getText());
+        hangModel.setGioiTinh(rdoNam.isSelected());
+        hangModel.setTrangThai(rdoHoatdong.isSelected());
+        java.util.Date utilDate = txtNgaysinh.getCalendar().getTime(); // Lấy đối tượng java.util.Date
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime()); // Chuyển đổi sang java.sql.Date
+        hangModel.setNgaySinh(sqlDate);
+        
+        return hangModel;
+    }
+    
+    private KhachHangModel taodulieumoi2() {
+        KhachHangModel hangModel = new KhachHangModel();
+        
         hangModel.setMa_KhachHang(txtMakhachhang.getText());
         hangModel.setTenKhachHang(txtTenkhachhang.getText());
         hangModel.setDiaChi(txtDiachi.getText());
@@ -422,12 +467,14 @@ private void lammoiForm(){
             MsgBox.alert(this, "Bạn cần nhập Địa chỉ");
             return false;
         }
-        if (txtMakhachhang.getText().trim().equals("")) {
-            MsgBox.alert(this, "Bạn cần nhập Mã khách hàng");
-            return false;
-        }
+       
         if (txtTenkhachhang.getText().trim().equals("")) {
             MsgBox.alert(this, "Bạn cần nhập Tên khách hàng");
+            return false;
+        }
+        String sdt = "0[0-9]{9}";
+        if(!txtSDT.getText().matches(sdt)){
+            MsgBox.alert(this, "Bạn cần nhập đúng định dạng số điện thoại");
             return false;
         }
         if (txtSDT.getText().trim().equals("")) {

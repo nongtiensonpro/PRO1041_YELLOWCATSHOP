@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import model.DoiMatKhau;
 import model.MaXacNhanTaiKhoan;
+import static utilities.CheckText.checkAtSdt;
 import utilities.MsgBox;
 
 /**
@@ -19,7 +20,9 @@ import utilities.MsgBox;
  * @author Nong_Tien_Son
  */
 public class QuenMatKhau extends javax.swing.JFrame {
+
     QuenMatKhauController matKhauController = new QuenMatKhauController();
+
     /**
      * Creates new form QuenMatKhau
      */
@@ -190,65 +193,66 @@ public class QuenMatKhau extends javax.swing.JFrame {
 
     private void btnCheckCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCheckCodeActionPerformed
         // TODO add your handling code here:
-        if(!txtCode.getText().trim().equals("")){
-           List<MaXacNhanTaiKhoan> mxntk = (List<MaXacNhanTaiKhoan>) matKhauController.timMaXacNhan(txtCode.getText());
-           if(mxntk.size()==0){
-               txtMaXacNhan.setText("Không tìm được mã xác nhận !");
-               return;
-           }else{
-               if(mxntk.get(0).getTrangThai()){
-               txtMaXacNhan.setText("Mã xác nhận hoạt động !");
-               txtCode.setEditable(false);   
-               
-           }else{
-                 txtMaXacNhan.setText("Mã xác nhận không hoạt động !");
-           }
-           }
-           
+        if (!txtCode.getText().trim().equals("")) {
+            List<MaXacNhanTaiKhoan> mxntk = (List<MaXacNhanTaiKhoan>) matKhauController.timMaXacNhan(txtCode.getText());
+            if (mxntk.size() == 0) {
+                txtMaXacNhan.setText("Không tìm được mã xác nhận !");
+                return;
+            } else {
+                if (mxntk.get(0).getTrangThai()) {
+                    txtMaXacNhan.setText("Mã xác nhận hoạt động !");
+                    txtCode.setEditable(false);
+
+                } else {
+                    txtMaXacNhan.setText("Mã xác nhận không hoạt động !");
+                }
+            }
+
         }
     }//GEN-LAST:event_btnCheckCodeActionPerformed
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
         // TODO add your handling code here:
-        if(txtMaXacNhan.getText().equalsIgnoreCase("Không tìm được mã xác nhận !"))
-        {
-            MsgBox.alert(this, "Không xác nhận không đúng nè !");
+        String maXacNhan = txtMaXacNhan.getText().trim();
+        if (maXacNhan.equalsIgnoreCase("Không tìm được mã xác nhận !")
+                || maXacNhan.equalsIgnoreCase("")
+                || maXacNhan.equalsIgnoreCase("Mã xác nhận không hoạt động !")) {
+            JOptionPane.showMessageDialog(this, "Mã xác nhận không hợp lệ, vui lòng thử lại.");
             return;
         }
-        if(txtMaXacNhan.getText().equalsIgnoreCase("")){
-            JOptionPane.showMessageDialog(this, "Chưa check mã xác nhận nè !");
-            return;
+
+        if (checkNull()) {
+            boolean ketQuaMeo = checkAtSdt(txtCode.getText(), txtPhoneNumber.getText());
+            if (ketQuaMeo) {
+                boolean ketQua = matKhauController.capNhatMatKhau(getDataFromText());
+                if (ketQua) {
+                    JOptionPane.showMessageDialog(this, "Bạn đã đổi mật khẩu thành công, vui lòng đăng nhập lại.");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Đổi mật khẩu thất bại, vui lòng kiểm tra lại số điện thoại.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ để đổi mật khẩu.");
+            }
         }
-        if(txtMaXacNhan.getText().equalsIgnoreCase("Mã xác nhận không hoạt động !")){
-            JOptionPane.showMessageDialog(this, "Mã xác nhận không sử dụng được nha liên hệ sếp đi nè!");
-            return;
-        }
-        
-        if(checkNull()){
-           boolean ketQua = matKhauController.capNhatMatKhau(getDataFromText());
-           if(ketQua){
-               JOptionPane.showMessageDialog(this, "Bạn đã đổi mật khẩu thành công mời đăng nhập lại !");
-           }else{
-                JOptionPane.showMessageDialog(this, "Bạn đã đổi mật khẩu thất bại hãy kiểm tra lại số điện thoại !");
-           }
-        }
-        
+
+
     }//GEN-LAST:event_btnOKActionPerformed
-    private boolean checkNull(){
-        if(txtPhoneNumber.getText().trim().equals("")){
+    private boolean checkNull() {
+        if (txtPhoneNumber.getText().trim().equals("")) {
             JOptionPane.showMessageDialog(this, "Bạn chưa nhập số điện thoại");
             return false;
         }
-        if(txtPasswordNew.getText().trim().equals("")){
+        if (txtPasswordNew.getText().trim().equals("")) {
             JOptionPane.showMessageDialog(this, "Bạn chưa nhập mật khẩu");
             return false;
         }
-        if(txtCode.getText().trim().equals("")){
+        if (txtCode.getText().trim().equals("")) {
             MsgBox.alert(this, "Bạn chưa nhập mã xác nhận nè");
         }
         return true;
     }
-    private DoiMatKhau getDataFromText(){
+
+    private DoiMatKhau getDataFromText() {
         DoiMatKhau dmk = new DoiMatKhau();
         dmk.setMaXacNhan(txtCode.getText());
         dmk.setSoDienThoai(txtPhoneNumber.getText());

@@ -35,7 +35,7 @@ CREATE TABLE ChucVuNhanVien
 )
 CREATE TABLE MaXacNhanTaiKhoan
 (
-    Ma_MaXacNhan VARCHAR(36) PRIMARY KEY DEFAULT NEWID(),
+    Ma_MaXacNhan VARCHAR(36) PRIMARY KEY,
     SoDienThoai VARCHAR(20),
     NgaySuDung DATE,
     TrangThai BIT

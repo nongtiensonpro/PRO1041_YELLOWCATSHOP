@@ -18,6 +18,58 @@ import model.MauSacModel;
  * @author Khanh
  */
 public class MauSacController {
+    
+    public List<MauSacModel> timkiemMauSactrue(){
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        MauSacModel mauSac = null;
+        
+        List<MauSacModel> danhsachMauSac = new ArrayList<>();
+         try {
+            connection = DatabaseConnection.getConnection();
+            String caulenhtruyvan = new String("select * from MauSac where TrangThai = 1");
+            statement = connection.prepareStatement(caulenhtruyvan);
+
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                mauSac = new MauSacModel();
+                mauSac.setMaMauSac(resultSet.getString("MaMauSac"));
+                mauSac.setTenMauSac(resultSet.getString("TenMauSac"));
+                mauSac.setTrangThai(resultSet.getBoolean("TrangThai"));
+                mauSac.setNgayTao(resultSet.getDate("NgayTao"));
+                mauSac.setNgaySua(resultSet.getDate("NgaySua"));
+                mauSac.setMoTa(resultSet.getString("MoTa"));
+                danhsachMauSac.add(mauSac);
+            }
+            return danhsachMauSac;
+        } catch (Exception e) {
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+    
     public List<MauSacModel> timkiemMauSac(){
         Connection connection = null;
         PreparedStatement statement = null;
@@ -91,7 +143,7 @@ public class MauSacController {
                     + "?)");
             statement = connection.prepareStatement(caulenhthem);
             statement.setString(1, mauSactruyenvao.getMaMauSac());
-            statement.setBoolean(2, mauSactruyenvao.getTrangThai());
+            statement.setBoolean(2, mauSactruyenvao.isTrangThai());
             statement.setDate(3, mauSactruyenvao.getNgayTao());
             statement.setDate(4, mauSactruyenvao.getNgaySua());
             statement.setString(5, mauSactruyenvao.getMoTa());
@@ -143,7 +195,7 @@ public class MauSacController {
                     + " WHERE MaMauSac=?");
             statement = connection.prepareStatement(caulenhUpdate);
 //             statement.setString(1, hangModel.getMaHang());
-            statement.setBoolean(1, mauSacModel.getTrangThai());
+            statement.setBoolean(1, mauSacModel.isTrangThai());
             statement.setDate(2, mauSacModel.getNgayTao());
             statement.setDate(3, mauSacModel.getNgaySua());
             System.out.println(mauSacModel.getNgaySua() + "MeoMeo");
@@ -189,9 +241,9 @@ public class MauSacController {
         List<MauSacModel> danhsachMauSac = new ArrayList<>();
         try {
             connection = DatabaseConnection.getConnection();
-            String caulenhtruyvan = new String("select * from MauSac where MaMauSac like ?");
+            String caulenhtruyvan = new String("select * from MauSac where MaMauSac like '%"+ matimkiem+"%' ");
              statement = connection.prepareStatement(caulenhtruyvan);
-             statement.setString(1,matimkiem );
+//             statement.setString(1,matimkiem );
              resultSet = statement.executeQuery();
              while(resultSet.next()){
                  mauSac = new MauSacModel();

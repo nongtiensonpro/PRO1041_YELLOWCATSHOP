@@ -1,11 +1,10 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package view_2;
 
 import controller.SizeController;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import model.SizeModel;
@@ -15,10 +14,9 @@ import utilities.MsgBox;
  *
  * @author LENHATLINH
  */
-public class Size extends javax.swing.JFrame {
-    SizeController SizeController = new SizeController();
-    List<SizeModel> danhsachSize = new ArrayList<>();
-    public static SizeModel Sizestatic = new SizeModel();
+public class Size extends javax.swing.JPanel {
+    SizeController sizeController = new SizeController();
+    List<SizeModel> danhsachSize = sizeController.timkiemSize();
 
     /**
      * Creates new form Size
@@ -27,19 +25,18 @@ public class Size extends javax.swing.JFrame {
         initComponents();
         hienThiSize();
     }
-    public void hienThiSize(){
-        DefaultTableModel dtm = (DefaultTableModel)tblSize.getModel();
+    private void hienThiSize() {
+        DefaultTableModel dtm = (DefaultTableModel) tblSize.getModel();
         dtm.setRowCount(0);
-        
-        danhsachSize = SizeController.timkiemSize();
+
         for (SizeModel sizeModel : danhsachSize) {
             dtm.addRow(new Object[]{
-            sizeModel.getMaSize(),
-            sizeModel.getSoSize(),
-            sizeModel.getMoTa()
+                sizeModel.getMaSize(),
+                sizeModel.getSoSize(),
+                sizeModel.getMoTa(),
             });
+
         }
-        
     }
 
     /**
@@ -54,11 +51,18 @@ public class Size extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        txtTimKiemTenSanPham = new javax.swing.JTextField();
-        btnFind = new javax.swing.JButton();
+        txtTimKiemSize = new javax.swing.JTextField();
         btnRest = new javax.swing.JButton();
         btnAdd = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtMoTa = new javax.swing.JTextArea();
+        txtMaSize = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        txtSoSize = new javax.swing.JTextField();
+        btnTimKiem = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblSize = new javax.swing.JTable();
 
@@ -71,10 +75,10 @@ public class Size extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(175, 175, 175)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(182, 182, 182))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -85,8 +89,6 @@ public class Size extends javax.swing.JFrame {
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        btnFind.setText("FIND");
 
         btnRest.setText("REST");
         btnRest.addActionListener(new java.awt.event.ActionListener() {
@@ -109,34 +111,77 @@ public class Size extends javax.swing.JFrame {
             }
         });
 
+        txtMoTa.setColumns(20);
+        txtMoTa.setRows(5);
+        jScrollPane2.setViewportView(txtMoTa);
+
+        jLabel2.setText("Mã Size");
+
+        jLabel6.setText("Mô tả");
+
+        jLabel7.setText("Số Size");
+
+        btnTimKiem.setText("FIND");
+        btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(txtTimKiemTenSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnFind)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnAdd)
-                .addGap(18, 18, 18)
-                .addComponent(btnUpdate)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                .addComponent(btnRest)
-                .addGap(31, 31, 31))
+                .addGap(22, 22, 22)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(txtTimKiemSize, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnTimKiem)
+                        .addGap(26, 26, 26)
+                        .addComponent(btnAdd)
+                        .addGap(30, 30, 30)
+                        .addComponent(btnUpdate)
+                        .addGap(40, 40, 40)
+                        .addComponent(btnRest)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel7)
+                            .addComponent(txtMaSize, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+                            .addComponent(txtSoSize))
+                        .addGap(79, 79, 79)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(20, 20, 20)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtTimKiemTenSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnFind)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(txtMaSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtSoSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtTimKiemSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRest)
                     .addComponent(btnAdd)
+                    .addComponent(btnTimKiem)
                     .addComponent(btnUpdate))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addGap(16, 16, 16))
         );
 
         tblSize.setModel(new javax.swing.table.DefaultTableModel(
@@ -150,18 +195,23 @@ public class Size extends javax.swing.JFrame {
                 "Mã", "Số Size", "Mô tả"
             }
         ));
+        tblSize.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblSizeMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblSize);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -172,82 +222,132 @@ public class Size extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:        
+        danhsachSize = sizeController.timkiemSize();
+        resetTbl();
         hienThiSize();
     }//GEN-LAST:event_btnRestActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-        ThemSize tenSizeChiTiet = new ThemSize();
-        tenSizeChiTiet.setVisible(true);
+        if(checktrong()){
+            boolean ketQua = sizeController.themTenSize(taoDoituong());
+            if(ketQua){
+                MsgBox.alert(this, "Bạn đã thêm size thành công");
+                danhsachSize = sizeController.timkiemSize();
+                hienThiSize();
+                resetTbl();
+            }else{
+                MsgBox.alert(this, "Bạn đã thêm size thất bại");
+            }
+
+        }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        int stt = tblSize.getSelectedRow();
         if(tblSize.getSelectedRow()>-1){
-            Sizestatic = SizeController.timkiemSize().get(stt);
-            SuaSizeChiTiet suaSizeChiTiet= new SuaSizeChiTiet();
-            suaSizeChiTiet.setVisible(true);
-        }else{
-            MsgBox.alert(this, "Bạn cần chọn dòng");
-            return;
+            boolean luachon = MsgBox.confirm(this, "Bạn có muốm sửa không?");
+            if(checktrong()) {
+
+                if(luachon){
+                    boolean ketqua = sizeController.suaTenSize(taoDoituong());
+                    if(ketqua){
+                        MsgBox.alert(this, "Bạn đã sửa thành công");
+                        danhsachSize = sizeController.timkiemSize();
+                        hienThiSize();
+                        resetTbl();
+                    }else{
+                        MsgBox.alert(this, "Bạn đã sửa không thành công");
+                    }
+                }
+            }
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(Size.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(Size.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(Size.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(Size.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new Size().setVisible(true);
-//            }
-//        });
-//    }
+    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
+        // TODO add your handling code here:
+        if(txtTimKiemSize.getText().trim().equals("")){
+            MsgBox.alert(this, "Mời nhập mã Size ");
+
+        }else{
+            danhsachSize = sizeController.timSizeGanDung(txtTimKiemSize.getText());
+            hienThiSize();
+        }
+    }//GEN-LAST:event_btnTimKiemActionPerformed
+
+    private void tblSizeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblSizeMouseClicked
+        // TODO add your handling code here:
+        if (tblSize.getSelectedRow() > -1) {
+            SizeModel sizeModel = sizeController.timkiemSize().get(tblSize.getSelectedRow());
+            txtMaSize.setText(sizeModel.getMaSize());
+            txtSoSize.setText(Integer.valueOf(sizeModel.getSoSize()).toString());
+            txtMoTa.setText(sizeModel.getMoTa());
+        }
+    }//GEN-LAST:event_tblSizeMouseClicked
+
+    public SizeModel taoDoituong() {
+        SizeModel sizeModel = new SizeModel();
+        sizeModel.setMaSize(txtMaSize.getText());
+        sizeModel.setSoSize(Integer.valueOf(txtSoSize.getText()));
+        sizeModel.setMoTa(txtMoTa.getText());
+        return sizeModel;
+    }
+
+    public void suaDoiTuong() {
+        if (checktrong()) {
+            Boolean ketqua = sizeController.suaTenSize(taoDoituong());
+            if (ketqua) {
+                MsgBox.alert(this, "Bạn đã sửa thành công!");
+            } else {
+                MsgBox.alert(this, "Sửa không thành công!");
+            }
+        }
+    }
+    public Boolean checktrong() {
+        if (txtMaSize.getText().trim().equals("")) {
+            MsgBox.alert(this, "Bạn cần nhập Mã Size");
+            return false;
+        }
+        if (txtSoSize.getText().trim().equals("")) {
+            MsgBox.alert(this, "Bạn cần nhập Số Size");
+            return false;
+        }
+        if (txtMoTa.getText().trim().equals("")) {
+            MsgBox.alert(this, "Bạn cần nhập mô tả");
+            return false;
+        }
+        return true;
+    }
+    public void resetTbl(){
+        txtMaSize.setText("");
+        txtSoSize.setText("");
+        txtMoTa.setText("");
+        txtTimKiemSize.setText("");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
-    private javax.swing.JButton btnFind;
     private javax.swing.JButton btnRest;
+    private javax.swing.JButton btnTimKiem;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblSize;
-    private javax.swing.JTextField txtTimKiemTenSanPham;
+    private javax.swing.JTextField txtMaSize;
+    private javax.swing.JTextArea txtMoTa;
+    private javax.swing.JTextField txtSoSize;
+    private javax.swing.JTextField txtTimKiemSize;
     // End of variables declaration//GEN-END:variables
 }

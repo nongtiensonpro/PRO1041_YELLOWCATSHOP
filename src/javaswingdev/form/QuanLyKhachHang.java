@@ -18,9 +18,11 @@ import static javaswingdev.form.BanHang.soDienThoaiKhachHang;
  * @author Nong_Tien_Son
  */
 public class QuanLyKhachHang extends javax.swing.JFrame {
+
     KhachHangController khachHangController = new KhachHangController();
     List<KhachHangModel> listKhanhHang = new ArrayList<>();
     public static KhachHangModel khachHangModelStatic = null;
+
     /**
      * Creates new form QuanLyKhachHang
      */
@@ -28,7 +30,8 @@ public class QuanLyKhachHang extends javax.swing.JFrame {
         initComponents();
         hienThiKhachHang();
     }
-    private void hienThiKhachHang(){
+
+    private void hienThiKhachHang() {
         DefaultTableModel dtm = (DefaultTableModel) tblKhachHang.getModel();
         dtm.setRowCount(0);
         listKhanhHang = khachHangController.timKiemTatCaKhachHang();
@@ -37,10 +40,11 @@ public class QuanLyKhachHang extends javax.swing.JFrame {
                 khachHangModel.getMa_KhachHang(),
                 khachHangModel.getTenKhachHang(),
                 khachHangModel.getSoDienThoai(),
-                khachHangModel.isTrangThai()?"Hoạt động":"Không hoạt động"
+                khachHangModel.isTrangThai() ? "Hoạt động" : "Không hoạt động"
             });
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -57,6 +61,7 @@ public class QuanLyKhachHang extends javax.swing.JFrame {
         btnFind = new javax.swing.JButton();
         btnRest = new javax.swing.JToggleButton();
         btnAdd = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblKhachHang = new javax.swing.JTable();
@@ -106,6 +111,13 @@ public class QuanLyKhachHang extends javax.swing.JFrame {
             }
         });
 
+        btnEdit.setText("Edit");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -117,6 +129,8 @@ public class QuanLyKhachHang extends javax.swing.JFrame {
                 .addComponent(btnFind)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAdd)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEdit)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnRest, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -129,7 +143,8 @@ public class QuanLyKhachHang extends javax.swing.JFrame {
                     .addComponent(txtFind, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnFind)
                     .addComponent(btnRest)
-                    .addComponent(btnAdd))
+                    .addComponent(btnAdd)
+                    .addComponent(btnEdit))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
@@ -205,14 +220,22 @@ public class QuanLyKhachHang extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void tblKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhachHangMouseClicked
+//        suaKhachHang();
+        if (tblKhachHang.getSelectedRow() > -1) {
+            soDienThoaiKhachHang = (String) tblKhachHang.getValueAt(tblKhachHang.getSelectedRow(), 2);
+
+        }
+    }//GEN-LAST:event_tblKhachHangMouseClicked
+
+    private void suaKhachHang() {
         // TODO add your handling code here:
-        if(tblKhachHang.getSelectedRow()>-1){
+        if (tblKhachHang.getSelectedRow() > -1) {
             khachHangModelStatic = listKhanhHang.get(tblKhachHang.getSelectedRow());
             soDienThoaiKhachHang = (String) tblKhachHang.getValueAt(tblKhachHang.getSelectedRow(), 2);
             SuaKhachHang suaKhachHang = new SuaKhachHang();
             suaKhachHang.setVisible(true);
         }
-    }//GEN-LAST:event_tblKhachHangMouseClicked
+    }
 
     private void btnRestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestActionPerformed
         // TODO add your handling code here:
@@ -223,20 +246,25 @@ public class QuanLyKhachHang extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel dtm = (DefaultTableModel) tblKhachHang.getModel();
         dtm.setRowCount(0);
-        if(txtFind.getText().trim().equals("")){
+        if (txtFind.getText().trim().equals("")) {
             hienThiKhachHang();
-        }else{
+        } else {
             listKhanhHang = khachHangController.timKiemKhachHangTheoSDT(txtFind.getText());
             for (KhachHangModel khachHangModel : listKhanhHang) {
-            dtm.addRow(new Object[]{
-                khachHangModel.getMa_KhachHang(),
-                khachHangModel.getTenKhachHang(),
-                khachHangModel.getSoDienThoai(),
-                khachHangModel.isTrangThai()?"Hoạt động":"Không hoạt động"
-            });
-        }
+                dtm.addRow(new Object[]{
+                    khachHangModel.getMa_KhachHang(),
+                    khachHangModel.getTenKhachHang(),
+                    khachHangModel.getSoDienThoai(),
+                    khachHangModel.isTrangThai() ? "Hoạt động" : "Không hoạt động"
+                });
+            }
         }
     }//GEN-LAST:event_btnFindActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+        suaKhachHang();
+    }//GEN-LAST:event_btnEditActionPerformed
 
     /**
      * @param args the command line arguments
@@ -275,6 +303,7 @@ public class QuanLyKhachHang extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnFind;
     private javax.swing.JToggleButton btnRest;
     private javax.swing.JLabel jLabel1;

@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.ChatLieuModel;
+import model.ChatLieuModel;
 
 /**
  *
@@ -146,12 +147,12 @@ public class ChatLieuController {
                     + "      WHERE[MaChatLieu] =?"
             );
             statement = connection.prepareStatement(caulenhUpdate);
-            statement.setString(1, clModel.getMaChatLieu());
-            statement.setString(2, clModel.getTen());
-            statement.setString(3, clModel.getMoTa());
-            statement.setDate(4, clModel.getNgayTao());
-            statement.setDate(5, clModel.getNgaySua());
-            statement.setBoolean(6, clModel.getTrangThai());
+            statement.setString(6, clModel.getMaChatLieu());
+            statement.setString(1, clModel.getTen());
+            statement.setString(2, clModel.getMoTa());
+            statement.setDate(3, clModel.getNgayTao());
+            statement.setDate(4, clModel.getNgaySua());
+            statement.setBoolean(5, clModel.getTrangThai());
             statement.executeUpdate();
             return true;
         } catch (Exception e) {
@@ -182,30 +183,33 @@ public class ChatLieuController {
         }
     }
 
-    public ChatLieuModel timKiemChatLieuTheoMa(String maChatLieu) {
-
+   public List<ChatLieuModel> timKiemChatLieuTheoMa(String machatlieu) {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        ChatLieuModel chatLieuTimThay = null;
+        ChatLieuModel chatLieuNew = null;
+        List<ChatLieuModel> listChatLieu = new ArrayList<>();
 
         try {
             connection = DatabaseConnection.getConnection();
-            String sql = "SELECT * FROM [dbo].[ChatLieu] WHERE [MaChatLieu] = ?";
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, maChatLieu);
+
+            String cauLenhTimKiem = "SELECT * FROM ChatLieu WHERE MaChatLieu = ?";
+            statement = connection.prepareStatement(cauLenhTimKiem);
+            statement.setString(1, machatlieu);
+
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                chatLieuTimThay = new ChatLieuModel();
-                chatLieuTimThay.setMaChatLieu(resultSet.getString("MaChatLieu"));
-                chatLieuTimThay.setTen(resultSet.getString("Ten"));
-                chatLieuTimThay.setMoTa(resultSet.getString("MoTa"));
-                chatLieuTimThay.setNgayTao(resultSet.getDate("NgayTao"));
-                chatLieuTimThay.setNgaySua(resultSet.getDate("NgaySua"));
-                chatLieuTimThay.setTrangThai(resultSet.getBoolean("TrangThai"));
+                chatLieuNew = new ChatLieuModel();
+                chatLieuNew.setMaChatLieu(resultSet.getString("MaChatLieu"));
+                chatLieuNew.setTen(resultSet.getString("Ten"));
+                chatLieuNew.setMoTa(resultSet.getString("MoTa"));
+                chatLieuNew.setNgayTao(resultSet.getDate("NgayTao"));
+                chatLieuNew.setNgaySua(resultSet.getDate("NgaySua"));
+                chatLieuNew.setTrangThai(resultSet.getBoolean("TrangThai"));
+                listChatLieu.add(chatLieuNew);
             }
-
+            return listChatLieu;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -232,7 +236,79 @@ public class ChatLieuController {
             }
         }
 
-        return chatLieuTimThay;
+        return listChatLieu;
     }
+    public List<ChatLieuModel> timChatLieuGanDung(String chatLieu) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<ChatLieuModel> danhSachSize = new ArrayList<>();
 
+        try {
+            connection = DatabaseConnection.getConnection();
+            String cauLenhTimKiemSQL = "SELECT * FROM [dbo].[ChatLieu] WHERE [MaChatLieu] LIKE ? OR Ten Like ?";
+            statement = connection.prepareStatement(cauLenhTimKiemSQL);
+            statement.setString(1, "%" + chatLieu + "%");
+            statement.setString(2, "%" + chatLieu + "%");
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                ChatLieuModel chatLieuNew = new ChatLieuModel();
+                chatLieuNew.setMaChatLieu(resultSet.getString("MaChatLieu"));
+                chatLieuNew.setTen(resultSet.getString("Ten"));
+                chatLieuNew.setMoTa(resultSet.getString("MoTa"));
+                chatLieuNew.setNgayTao(resultSet.getDate("NgayTao"));
+                chatLieuNew.setNgaySua(resultSet.getDate("NgaySua"));
+                chatLieuNew.setTrangThai(resultSet.getBoolean("TrangThai"));
+                danhSachSize.add(chatLieuNew);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        return danhSachSize;
+    }
+    public boolean ChecktrungMa(String ma) {
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+
+            String cauLenhThem = "SELECT MaChatLieu, COUNT(*)\n"
+                    + "FROM ChatLieu\n"
+                    + "GROUP BY Ma\n"
+                    + "HAVING COUNT(*) > 1; ";
+            statement = connection.prepareStatement(cauLenhThem);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+
+        }
+    }
 }

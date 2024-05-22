@@ -19,7 +19,7 @@ public class DatabaseConnection {
 
         dataSource.setUser("sa");
         dataSource.setDatabaseName("SD18312_TEAM_6");
-        dataSource.setPassword("123456");//Đổi mật khẩu ở đây nếu cần
+        dataSource.setPassword("1234");//Đổi mật khẩu ở đây nếu cần
         dataSource.setPortNumber(1433);//Nếu kết nỗi lỗi có thể do cổng 1433 đóng
         dataSource.setEncrypt(false);
         Connection conn = null;
@@ -38,8 +38,8 @@ public class DatabaseConnection {
     
     
 //    public static void main(String[] args) {
-//        System.out.println(getconConnection());
-//        if(!getconConnection().equals("")){
+//        System.out.println(getConnection());
+//        if(!getConnection().equals("")){
 //            System.out.println("Ket noi SQL Server thanh cong rui nha Baby !");
 //        }
 //    }

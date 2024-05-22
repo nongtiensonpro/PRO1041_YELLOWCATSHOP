@@ -4,7 +4,10 @@
  */
 package javaswingdev.form;
 
+import controller.ExcelExporter;
 import controller.ThongKeController;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import model.ThongKeSanPhamModel;
@@ -24,11 +27,13 @@ public class ThongKee extends javax.swing.JPanel {
      */
     public ThongKee() {
         initComponents();
-        loadHangHoa();
+//        loadHangHoa();
+        loadTop3();
         rdoTatca.setSelected(true);
-
         cboThang.setVisible(false);
+        thongKeTatCa();
     }
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     private void loadtimkiem(String nam) {
         List<ThongKeSanPhamModel> listSP = thongKeController.timkiemThongKeTheoNam(nam);
@@ -36,7 +41,7 @@ public class ThongKee extends javax.swing.JPanel {
         DefaultTableModel dtm = (DefaultTableModel) tblHangHoa.getModel();
         dtm.setRowCount(0);
         long tong = 0;
-        txtSoHoaDon.setText(String.valueOf(listSP.size()));
+        txtSoHoaDon.setText(thongKeController.TongHoaDonTheoNam(nam));
         try {
             txtTongKhachHang.setText(String.valueOf(thongKeController.timkiemThongKeKhachHangnam(nam).get(0).getDoanhThu()));
         } catch (Exception e) {
@@ -60,7 +65,7 @@ public class ThongKee extends javax.swing.JPanel {
         DefaultTableModel dtm = (DefaultTableModel) tblHangHoa.getModel();
         dtm.setRowCount(0);
         long tong = 0;
-        txtSoHoaDon.setText(String.valueOf(listSP.size()));
+        txtSoHoaDon.setText(thongKeController.TongHoaDonTheoThangNam(nam, thang));
         try {
             txtTongKhachHang.setText(String.valueOf(thongKeController.timkiemThongKeKhachHangthangnam(nam, thang).get(0).getDoanhThu()));
         } catch (Exception e) {
@@ -78,12 +83,52 @@ public class ThongKee extends javax.swing.JPanel {
         txtDoanhThu.setText(String.valueOf(tong));
     }
 
+    private void loadTop3() {
+        listSP = thongKeController.timkiemTop3SanPham();
+        DefaultTableModel dtm = (DefaultTableModel) tblTop3.getModel();
+        dtm.setRowCount(0);
+        long tong = 0;
+        txtSoHoaDon.setText(thongKeController.TongHoaDon());
+        txtTongKhachHang.setText(String.valueOf(thongKeController.timkiemThongKeKhachHang().get(0).getDoanhThu()));
+        for (ThongKeSanPhamModel thongKeSanPhamModel : listSP) {
+            dtm.addRow(new Object[]{
+                thongKeSanPhamModel.getTenSanPham(),
+                thongKeSanPhamModel.getSoLuong(),
+                thongKeSanPhamModel.getDonGia(),
+                thongKeSanPhamModel.getDoanhThu()
+            });
+            tong += thongKeSanPhamModel.getDoanhThu();
+        }
+        txtDoanhThu.setText(String.valueOf(tong));
+    }
+private void Loc(){
+        Date ngayBD = txtNBD.getDate();
+        Date ngayKT = txtNKT.getDate();
+        listSP = thongKeController.Loc(simpleDateFormat.format(ngayBD), simpleDateFormat.format(ngayKT));
+
+     DefaultTableModel dtm = (DefaultTableModel) tblHangHoa.getModel();
+     dtm.setRowCount(0);
+        long tong = 0;
+     txtSoHoaDon.setText(thongKeController.LocHD(simpleDateFormat.format(ngayBD), simpleDateFormat.format(ngayKT)));
+     txtTongKhachHang.setText(thongKeController.LocKH(simpleDateFormat.format(ngayBD), simpleDateFormat.format(ngayKT)));
+//        txtTongKhachHang.setText(String.valueOf(thongKeController.timkiemThongKeKhachHang().get(0).getDoanhThu()));
+        for (ThongKeSanPhamModel thongKeSanPhamModel : listSP) {
+            dtm.addRow(new Object[]{
+                thongKeSanPhamModel.getTenSanPham(),
+                thongKeSanPhamModel.getSoLuong(),
+                thongKeSanPhamModel.getDonGia(),
+                thongKeSanPhamModel.getDoanhThu()
+            });
+            tong += thongKeSanPhamModel.getDoanhThu();
+        }
+        txtDoanhThu.setText(String.valueOf(tong));
+}
     private void loadHangHoa() {
-        listSP = thongKeController.timkiemThongKeTheoSanPham();
+//        listSP = thongKeController.timkiemThongKeTheoSanPham();
         DefaultTableModel dtm = (DefaultTableModel) tblHangHoa.getModel();
         dtm.setRowCount(0);
         long tong = 0;
-        txtSoHoaDon.setText(String.valueOf(listSP.size()));
+        txtSoHoaDon.setText(thongKeController.TongHoaDon());
         txtTongKhachHang.setText(String.valueOf(thongKeController.timkiemThongKeKhachHang().get(0).getDoanhThu()));
         for (ThongKeSanPhamModel thongKeSanPhamModel : listSP) {
             dtm.addRow(new Object[]{
@@ -124,9 +169,18 @@ public class ThongKee extends javax.swing.JPanel {
         rdoTheonam = new javax.swing.JRadioButton();
         cboThang = new javax.swing.JComboBox<>();
         txtNam = new javax.swing.JTextField();
+        txtTimKiem = new javax.swing.JTextField();
+        btnTimkiem = new javax.swing.JButton();
+        btnLammoiThongke = new javax.swing.JButton();
+        txtNBD = new com.toedter.calendar.JDateChooser();
+        txtNKT = new com.toedter.calendar.JDateChooser();
+        btnLoc = new javax.swing.JButton();
+        btnxuatXcelThongke = new javax.swing.JButton();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jScrollPane4 = new javax.swing.JScrollPane();
         tblHangHoa = new javaswingdev.swing.table.Table();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblTop3 = new javaswingdev.swing.table.Table();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Doanh Thu");
@@ -302,6 +356,34 @@ public class ThongKee extends javax.swing.JPanel {
             }
         });
 
+        btnTimkiem.setText("Tìm kiếm");
+        btnTimkiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimkiemActionPerformed(evt);
+            }
+        });
+
+        btnLammoiThongke.setText("Làm mới");
+        btnLammoiThongke.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLammoiThongkeActionPerformed(evt);
+            }
+        });
+
+        btnLoc.setText("Lọc");
+        btnLoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLocActionPerformed(evt);
+            }
+        });
+
+        btnxuatXcelThongke.setText("Xuất Excel");
+        btnxuatXcelThongke.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnxuatXcelThongkeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -309,33 +391,65 @@ public class ThongKee extends javax.swing.JPanel {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(rdoTheonam, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel8Layout.createSequentialGroup()
-                            .addComponent(rdoTheothang)
-                            .addGap(102, 102, 102)))
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(rdoTatca)
-                        .addGap(131, 131, 131)))
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtNam, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cboThang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnTimkiem)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnLammoiThongke)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnxuatXcelThongke)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnLoc)
+                        .addGap(60, 60, 60))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(rdoTheonam, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel8Layout.createSequentialGroup()
+                                    .addComponent(rdoTheothang)
+                                    .addGap(102, 102, 102)))
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addComponent(rdoTatca)
+                                .addGap(131, 131, 131)))
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cboThang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNam, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtNBD, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                            .addComponent(txtNKT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(184, 184, 184))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(rdoTatca)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(rdoTatca)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(rdoTheothang)
+                            .addComponent(cboThang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(txtNBD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rdoTheothang)
-                    .addComponent(cboThang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(rdoTheonam)
+                        .addComponent(txtNam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNKT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rdoTheonam)
-                    .addComponent(txtNam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnTimkiem)
+                        .addComponent(btnLammoiThongke)
+                        .addComponent(btnxuatXcelThongke))
+                    .addComponent(btnLoc))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         tblHangHoa.setModel(new javax.swing.table.DefaultTableModel(
@@ -353,13 +467,30 @@ public class ThongKee extends javax.swing.JPanel {
 
         jTabbedPane2.addTab("Chi tiết", jScrollPane4);
 
+        tblTop3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Tên", "Số Lượng", "Đơn gia", "Doanh thu"
+            }
+        ));
+        jScrollPane1.setViewportView(tblTop3);
+
+        jTabbedPane2.addTab(" Top 3 SP bán nhiều nhất", jScrollPane1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 933, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jTabbedPane2)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -367,9 +498,9 @@ public class ThongKee extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 229, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 51, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -380,12 +511,15 @@ public class ThongKee extends javax.swing.JPanel {
     }//GEN-LAST:event_rdoTatcaMouseClicked
 
     private void rdoTatcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoTatcaActionPerformed
-        // TODO add your handling code here:
+        thongKeTatCa();
+    }//GEN-LAST:event_rdoTatcaActionPerformed
 
+    private void thongKeTatCa() {
+        // TODO add your handling code here:
         listSP = thongKeController.timkiemThongKeTheoSanPham();
         cboThang.setVisible(false);
         loadHangHoa();
-    }//GEN-LAST:event_rdoTatcaActionPerformed
+    }
 
     private void rdoTheothangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdoTheothangMouseClicked
         // TODO add your handling code here:
@@ -442,8 +576,43 @@ public class ThongKee extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNamActionPerformed
 
+    private void btnTimkiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimkiemActionPerformed
+        // TODO add your handling code here:
+        if (txtTimKiem.getText().trim().equals("")) {
+            MsgBox.alert(this, "Mời nhap tên SP");
+        } else {
+            listSP = thongKeController.timkiemThongKeTheoTenSP(txtTimKiem.getText());
+            loadHangHoa();
+        }
+    }//GEN-LAST:event_btnTimkiemActionPerformed
+
+    private void btnxuatXcelThongkeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnxuatXcelThongkeActionPerformed
+        // TODO add your handling code here:
+        ExcelExporter.xuatFileExcelThongKe(listSP);
+    }//GEN-LAST:event_btnxuatXcelThongkeActionPerformed
+
+    private void btnLammoiThongkeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLammoiThongkeActionPerformed
+        // TODO add your handling code here:
+        txtTimKiem.setText("");
+        listSP = thongKeController.timkiemThongKeTheoSanPham();
+        loadHangHoa();
+    }//GEN-LAST:event_btnLammoiThongkeActionPerformed
+
+    private void btnLocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocActionPerformed
+        // TODO add your handling code here:
+        Date ngayBD = txtNBD.getDate();
+        Date ngayKT = txtNKT.getDate();
+//        txtSoHoaDon.setText(thongKeController.LocHD(ngayBD, ngayKT));
+        listSP = thongKeController.Loc(simpleDateFormat.format(ngayBD), simpleDateFormat.format(ngayKT));
+        Loc();
+    }//GEN-LAST:event_btnLocActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLammoiThongke;
+    private javax.swing.JButton btnLoc;
+    private javax.swing.JButton btnTimkiem;
+    private javax.swing.JButton btnxuatXcelThongke;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cboThang;
     private javax.swing.JLabel jLabel1;
@@ -455,15 +624,20 @@ public class ThongKee extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JRadioButton rdoTatca;
     private javax.swing.JRadioButton rdoTheonam;
     private javax.swing.JRadioButton rdoTheothang;
     private javaswingdev.swing.table.Table tblHangHoa;
+    private javaswingdev.swing.table.Table tblTop3;
     private javax.swing.JLabel txtDoanhThu;
+    private com.toedter.calendar.JDateChooser txtNBD;
+    private com.toedter.calendar.JDateChooser txtNKT;
     private javax.swing.JTextField txtNam;
     private javax.swing.JLabel txtSoHoaDon;
+    private javax.swing.JTextField txtTimKiem;
     private javax.swing.JLabel txtTongKhachHang;
     // End of variables declaration//GEN-END:variables
 }

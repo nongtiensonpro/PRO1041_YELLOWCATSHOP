@@ -33,7 +33,7 @@ private void hienThiNgayTao(){
         txtMaNSX.setText(NSX.nsxStatic.getMaNSX());
         txtTenNSX.setText(NSX.nsxStatic.getTenNSX());
         txtQuocGia.setText(NSX.nsxStatic.getQuocGia());
-        if (NSX.nsxStatic.getTrangThai()) {
+        if (NSX.nsxStatic.isTrangThai()) {
             rdHoatDong.setSelected(true);
         } else {
 

@@ -14,7 +14,7 @@ public class NhaSanXuatModel {
     private String maNSX;
     private String tenNSX;
     private String quocGia;
-    private Boolean trangThai;
+    private boolean trangThai;
     private Date ngayTao;
     private Date ngaySua;
     private String moTa;
@@ -22,7 +22,7 @@ public class NhaSanXuatModel {
     public NhaSanXuatModel() {
     }
 
-    public NhaSanXuatModel(String maNSX, String tenNSX, String quocGia, Boolean trangThai, Date ngayTao, Date ngaySua, String moTa) {
+    public NhaSanXuatModel(String maNSX, String tenNSX, String quocGia, boolean trangThai, Date ngayTao, Date ngaySua, String moTa) {
         this.maNSX = maNSX;
         this.tenNSX = tenNSX;
         this.quocGia = quocGia;
@@ -56,11 +56,11 @@ public class NhaSanXuatModel {
         this.quocGia = quocGia;
     }
 
-    public Boolean getTrangThai() {
+    public boolean isTrangThai() {
         return trangThai;
     }
 
-    public void setTrangThai(Boolean trangThai) {
+    public void setTrangThai(boolean trangThai) {
         this.trangThai = trangThai;
     }
 
@@ -87,6 +87,7 @@ public class NhaSanXuatModel {
     public void setMoTa(String moTa) {
         this.moTa = moTa;
     }
-    
+
+        
     
 }

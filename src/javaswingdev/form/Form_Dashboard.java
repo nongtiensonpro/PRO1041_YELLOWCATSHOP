@@ -1,7 +1,5 @@
 package javaswingdev.form;
 
-import javaswingdev.card.ModelCard;
-
 public class Form_Dashboard extends javax.swing.JPanel {
 
     public Form_Dashboard() {
@@ -10,7 +8,7 @@ public class Form_Dashboard extends javax.swing.JPanel {
     }
 
     private void init() {
-        tblNhanVien.fixTable(jScrollPane1);
+
 
         //  init card data
 //        card1.setData(new ModelCard(null, null, null, "$ 500.00", "Report Income Monthly"));
@@ -23,10 +21,9 @@ public class Form_Dashboard extends javax.swing.JPanel {
     private void initComponents() {
 
         roundPanel1 = new javaswingdev.swing.RoundPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblNhanVien = new javaswingdev.swing.table.Table();
+        jLabel1 = new javax.swing.JLabel();
         roundPanel2 = new javaswingdev.swing.RoundPanel();
-        labelIcon1 = new javaswingdev.card.LabelIcon();
+        jLabel2 = new javax.swing.JLabel();
 
         setOpaque(false);
 
@@ -34,23 +31,7 @@ public class Form_Dashboard extends javax.swing.JPanel {
         roundPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
         roundPanel1.setRound(10);
 
-        tblNhanVien.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "#"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tblNhanVien);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/LogoOK.jpg"))); // NOI18N
 
         javax.swing.GroupLayout roundPanel1Layout = new javax.swing.GroupLayout(roundPanel1);
         roundPanel1.setLayout(roundPanel1Layout);
@@ -58,34 +39,35 @@ public class Form_Dashboard extends javax.swing.JPanel {
             roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(roundPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
         );
         roundPanel1Layout.setVerticalGroup(
             roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(roundPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 438, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        labelIcon1.setText("HOME");
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        jLabel2.setText("Yellow Cat Company");
 
         javax.swing.GroupLayout roundPanel2Layout = new javax.swing.GroupLayout(roundPanel2);
         roundPanel2.setLayout(roundPanel2Layout);
         roundPanel2Layout.setHorizontalGroup(
             roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(roundPanel2Layout.createSequentialGroup()
-                .addGap(237, 237, 237)
-                .addComponent(labelIcon1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(37, 37, 37)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 749, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         roundPanel2Layout.setVerticalGroup(
             roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(roundPanel2Layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(labelIcon1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addGap(22, 22, 22)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -111,10 +93,9 @@ public class Form_Dashboard extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
-    private javaswingdev.card.LabelIcon labelIcon1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javaswingdev.swing.RoundPanel roundPanel1;
     private javaswingdev.swing.RoundPanel roundPanel2;
-    private javaswingdev.swing.table.Table tblNhanVien;
     // End of variables declaration//GEN-END:variables
 }

@@ -18,7 +18,57 @@ import model.NhaSanXuatModel;
  * @author Khanh
  */
 public class NhaSanXuatController {
+ public List<NhaSanXuatModel> timkiemNSXtrue() {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        NhaSanXuatModel nsx = null;
 
+        List<NhaSanXuatModel> danhsachNSX = new ArrayList<>();
+        try {
+            connection = DatabaseConnection.getConnection();
+            String caulenhtruyvan = new String("select * from NhaSanXuat where TrangThai = 1");
+            statement = connection.prepareStatement(caulenhtruyvan);
+
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                nsx = new NhaSanXuatModel();
+                nsx.setMaNSX(resultSet.getString("MaNSX"));
+                nsx.setTenNSX(resultSet.getString("TenNSX"));
+                nsx.setQuocGia(resultSet.getString("QuocGia"));
+                nsx.setTrangThai(resultSet.getBoolean("TrangThai"));
+                nsx.setNgayTao(resultSet.getDate("NgayTao"));
+                nsx.setNgaySua(resultSet.getDate("NgaySua"));
+                nsx.setMoTa(resultSet.getString("MoTa"));
+                danhsachNSX.add(nsx);
+            }
+            return danhsachNSX;
+        } catch (Exception e) {
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
     public List<NhaSanXuatModel> timkiemNSX() {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -97,7 +147,7 @@ public class NhaSanXuatController {
             statement = connection.prepareStatement(caulenhthem);
             statement.setString(1, nsxTruyenVao.getMaNSX());
             statement.setString(2, nsxTruyenVao.getQuocGia());
-            statement.setBoolean(3, nsxTruyenVao.getTrangThai());
+            statement.setBoolean(3, nsxTruyenVao.isTrangThai());
             statement.setDate(4, nsxTruyenVao.getNgayTao());
             statement.setDate(5, nsxTruyenVao.getNgaySua());
             statement.setString(6, nsxTruyenVao.getMoTa());
@@ -151,7 +201,7 @@ public class NhaSanXuatController {
             statement = connection.prepareStatement(caulenhUpdate);
 //             statement.setString(1, hangModel.getMaHang());
             statement.setString(1, nsxModel.getQuocGia());
-            statement.setBoolean(2, nsxModel.getTrangThai());
+            statement.setBoolean(2, nsxModel.isTrangThai());
             statement.setDate(3, nsxModel.getNgayTao());
             statement.setDate(4, nsxModel.getNgaySua());
             System.out.println(nsxModel.getNgaySua() + "MeoMeo");
@@ -197,9 +247,9 @@ public class NhaSanXuatController {
         List<NhaSanXuatModel> danhsachHang = new ArrayList<>();
         try {
             connection = DatabaseConnection.getConnection();
-            String caulenhtruyvan = new String("select * from NhaSanXuat where MaNSX like ?");
+            String caulenhtruyvan = new String("select * from NhaSanXuat where MaNSX like '%"+matimkiem+"%' ");
             statement = connection.prepareStatement(caulenhtruyvan);
-            statement.setString(1, matimkiem);
+//            statement.setString(1, matimkiem);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 hang = new NhaSanXuatModel();

@@ -85,17 +85,18 @@ public class QuenMatKhauController {
         }
     }
 
-    public boolean themMaQuenMatKhau() {
-
+    public boolean themMaQuenMatKhau(String sdt) {
+        System.out.println(sdt+"MeoMeoMeoMeo");
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         try {
-            String sql = "INSERT INTO MaXacNhanTaiKhoan(TrangThai)\n"
-                    + "VALUES(1)";
+            String sql = "INSERT INTO MaXacNhanTaiKhoan(Ma_MaXacNhan,TrangThai)\n"
+                    + "VALUES(? ,1)";
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareCall(sql);
+            statement.setString(1, sdt);
             statement.executeUpdate();
             return true;
         } catch (Exception e) {

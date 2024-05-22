@@ -18,7 +18,56 @@ import model.HangModel;
  * @author Khanh
  */
 public class HangController {
+public List<HangModel> timkiemHanghtrue() {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        HangModel hang = null;
 
+        List<HangModel> danhsachHang = new ArrayList<>();
+        try {
+            connection = DatabaseConnection.getConnection();
+            String caulenhtruyvan = new String("select * from Hang where TrangThai = 1");
+            statement = connection.prepareStatement(caulenhtruyvan);
+
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                hang = new HangModel();
+                hang.setMaHang(resultSet.getString("MaHang"));
+                hang.setTenHang(resultSet.getString("TenHang"));
+                hang.setTrangThai(resultSet.getBoolean("TrangThai"));
+                hang.setNgayTao(resultSet.getDate("NgayTao"));
+                hang.setNgaySua(resultSet.getDate("NgaySua"));
+                hang.setMoTa(resultSet.getString("MoTa"));
+                danhsachHang.add(hang);
+            }
+            return danhsachHang;
+        } catch (Exception e) {
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
     public List<HangModel> timkiemHang() {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -93,7 +142,7 @@ public class HangController {
                     + "?)");
             statement = connection.prepareStatement(caulenhthem);
             statement.setString(1, hangtruyenvao.getMaHang());
-            statement.setBoolean(2, hangtruyenvao.getTrangThai());
+            statement.setBoolean(2, hangtruyenvao.isTrangThai());
             statement.setDate(3, hangtruyenvao.getNgayTao());
             statement.setDate(4, hangtruyenvao.getNgaySua());
             statement.setString(5, hangtruyenvao.getMoTa());
@@ -146,7 +195,7 @@ public class HangController {
                     + " WHERE MaHang=?");
             statement = connection.prepareStatement(caulenhUpdate);
 //             statement.setString(1, hangModel.getMaHang());
-            statement.setBoolean(1, hangModel.getTrangThai());
+            statement.setBoolean(1, hangModel.isTrangThai());
             statement.setDate(2, hangModel.getNgayTao());
             statement.setDate(3, hangModel.getNgaySua());
             System.out.println(hangModel.getNgaySua() + "MeoMeo");
@@ -192,9 +241,9 @@ public class HangController {
         List<HangModel> danhsachHang = new ArrayList<>();
         try {
             connection = DatabaseConnection.getConnection();
-            String caulenhtruyvan = new String("select * from Hang where MaHang like ?");
+            String caulenhtruyvan = new String("select * from Hang where MaHang like '%"+matimkiem+"%'  ");
             statement = connection.prepareStatement(caulenhtruyvan);
-            statement.setString(1, matimkiem);
+//            statement.setString(1, matimkiem);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 hang = new HangModel();
@@ -207,7 +256,9 @@ public class HangController {
                 danhsachHang.add(hang);
             }
             return danhsachHang;
+            
         } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (resultSet != null) {
                 try {

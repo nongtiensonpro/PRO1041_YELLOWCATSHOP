@@ -5,9 +5,13 @@
 package javaswingdev.form;
 
 import controller.QuenMatKhauController;
+import controller.TaiKhoanNhanVienController;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import model.MaXacNhanTaiKhoan;
+import model.TaiKhoanNhanVIenFull;
 import utilities.MsgBox;
 
 /**
@@ -18,6 +22,7 @@ public class QuanLyMaXacThuc extends javax.swing.JPanel {
 
     QuenMatKhauController quenMatKhauController = new QuenMatKhauController();
     List<MaXacNhanTaiKhoan> listMaXacThucTaiKhoan = quenMatKhauController.timMaXacNhan("");
+    TaiKhoanNhanVienController taiKhoanNhanVienController = new TaiKhoanNhanVienController();
 
     /**
      * Creates new form QuanLyMaXacThuc
@@ -253,6 +258,8 @@ public class QuanLyMaXacThuc extends javax.swing.JPanel {
             boolean ketQua = quenMatKhauController.voHieuHoaMaXacNhan(txtSoDienThoai.getText());
             if (ketQua) {
                 MsgBox.alert(this, "Bạn đã hủy mã xác thực thành công !");
+                  listMaXacThucTaiKhoan = quenMatKhauController.timMaXacNhan("");
+        hienThiLenTable();
             } else {
                 MsgBox.alert(this, "Bạn đã hủy mã xác thực thất bại !");
             }
@@ -261,18 +268,52 @@ public class QuanLyMaXacThuc extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        txtSoDienThoai.setText("");
         listMaXacThucTaiKhoan = quenMatKhauController.timMaXacNhan("");
+        demMaXacThucHoatDong();
         hienThiLenTable();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        boolean luaChon = MsgBox.confirm(this, "Bạn có muốn tạo mã xác thực tài khoản mới");
-        if (luaChon) {
-            quenMatKhauController.themMaQuenMatKhau();
-            listMaXacThucTaiKhoan = quenMatKhauController.timMaXacNhan("");
-            hienThiLenTable();
+       // Xử lý sự kiện khi nút được nhấn
+    boolean luaChon = MsgBox.confirm(this, "Bạn có muốn tạo mã xác thực tài khoản mới");
+    
+    if (luaChon) {
+        // Yêu cầu người dùng nhập số điện thoại
+        String sdt = MsgBox.promt(this, "Số điện thoại bạn muốn khôi phục");
+        
+        // Kiểm tra xem số điện thoại đã được nhập hay chưa
+        if (sdt != null && !sdt.isEmpty()) {
+            try {
+                // Kiểm tra xem số điện thoại nhân viên có tồn tại không
+                TaiKhoanNhanVIenFull full = taiKhoanNhanVienController.selectNhanVienFull("@" + sdt).get(0);
+            } catch (Exception e) {
+                // Nếu số điện thoại không tồn tại trong cơ sở dữ liệu, hiển thị thông báo và thoát khỏi phương thức
+                MsgBox.alert(this, "Số điện thoại nhân viên không tồn tại");
+                return;
+            }
+            
+            // Tạo mã xác thực bằng cách kết hợp thời gian hiện tại và số điện thoại
+            Date currentTime = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("ssHHmm");
+            String formattedTime = formatter.format(currentTime);
+            String maXacThuc =sdt+ formattedTime;
+            
+            // Thêm mã xác thực vào cơ sở dữ liệu
+            boolean themThanhCong = quenMatKhauController.themMaQuenMatKhau(maXacThuc);
+            if (themThanhCong) {
+                // Nếu thêm thành công, cập nhật lại danh sách mã xác thực và hiển thị lên bảng
+                listMaXacThucTaiKhoan = quenMatKhauController.timMaXacNhan("");
+                hienThiLenTable();
+            } else {
+                // Nếu có lỗi xảy ra trong quá trình thêm mã xác thực, thông báo cho người dùng
+                MsgBox.alert(this, "Có lỗi xảy ra khi tạo mã xác thực, vui lòng thử lại sau.");
+            }
+        } else {
+            // Nếu người dùng không nhập số điện thoại, hiển thị thông báo
+            MsgBox.alert(this, "Vui lòng nhập số điện thoại để khôi phục tài khoản.");
         }
+    }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void lamMoiTable() {

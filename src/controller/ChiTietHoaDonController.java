@@ -153,10 +153,10 @@ public class ChiTietHoaDonController {
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Số hàng đã bị xóa: " + rowsAffected);
+//                System.out.println("Số hàng đã bị xóa: " + rowsAffected);
                 return true;
             } else {
-                System.out.println("Không có hàng nào được xóa.");
+//                System.out.println("Không có hàng nào được xóa.");
                 return false;
             }
         } catch (Exception e) {
@@ -180,12 +180,15 @@ public class ChiTietHoaDonController {
         PreparedStatement statement = null;
         try {
             String cauLenhTruyVan = "UPDATE [dbo].[HoaDonChiTiet]\n"
-                    + "   SET  SoLuong = ?\n"
+                    + "   SET  SoLuong = ? ,"
+                    + "    TongTienCT = ? \n"
                     + " WHERE MaHoaDonChiTiet = ?";
             connection = DatabaseConnection.getConnection();
             statement = connection.prepareStatement(cauLenhTruyVan);
             statement.setInt(1, sp.getSoLuong());
-            statement.setString(2, sp.getMaHoaDonChiTiet());
+            statement.setInt(2, sp.getTongTien());
+//            System.out.println(sp.getTongTien()+"MEOMEOMEOMEO");
+            statement.setString(3, sp.getMaHoaDonChiTiet());
             statement.executeUpdate();
             return true;
         } catch (Exception e) {

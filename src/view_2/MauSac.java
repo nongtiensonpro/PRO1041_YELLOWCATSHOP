@@ -38,7 +38,7 @@ public class MauSac extends javax.swing.JFrame {
                 mauSacModel.getNgayTao(),
                 mauSacModel.getNgaySua(),
                 mauSacModel.getMoTa(),
-                mauSacModel.getTrangThai() ? "Hoạt động" : "Không hoạt động"
+                mauSacModel.isTrangThai()? "Hoạt động" : "Không hoạt động"
             });
         }
     }
@@ -229,7 +229,7 @@ public class MauSac extends javax.swing.JFrame {
                     mauSacModel.getNgayTao(),
                     mauSacModel.getNgaySua(),
                     mauSacModel.getMoTa(),
-                    mauSacModel.getTrangThai() ? "Hoạt động" : "Không hoạt động"
+                    mauSacModel.isTrangThai()? "Hoạt động" : "Không hoạt động"
                 });
             }
         }

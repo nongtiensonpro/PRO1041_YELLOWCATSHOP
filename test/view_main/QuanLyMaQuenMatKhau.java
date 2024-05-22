@@ -194,7 +194,7 @@ public class QuanLyMaQuenMatKhau extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-       qmkc.themMaQuenMatKhau();
+//       qmkc.themMaQuenMatKhau();
        hienThiBanDau();
         
     }//GEN-LAST:event_btnAddActionPerformed

@@ -15,15 +15,17 @@ public class KhachHangHoaDonModel {
     private int soDonDaMua;
     private long tongTienDaMua;
     private Date ngayMuaGanNhat;
+    private Date ngayMuaLanDau;
 
     public KhachHangHoaDonModel() {
     }
 
-    public KhachHangHoaDonModel(String sdtKhachHang, int soDonDaMua, long tongTienDaMua, Date ngayMuaGanNhat) {
+    public KhachHangHoaDonModel(String sdtKhachHang, int soDonDaMua, long tongTienDaMua, Date ngayMuaGanNhat, Date ngayMuaLanDau) {
         this.sdtKhachHang = sdtKhachHang;
         this.soDonDaMua = soDonDaMua;
         this.tongTienDaMua = tongTienDaMua;
         this.ngayMuaGanNhat = ngayMuaGanNhat;
+        this.ngayMuaLanDau = ngayMuaLanDau;
     }
 
     public String getSdtKhachHang() {
@@ -57,6 +59,16 @@ public class KhachHangHoaDonModel {
     public void setNgayMuaGanNhat(Date ngayMuaGanNhat) {
         this.ngayMuaGanNhat = ngayMuaGanNhat;
     }
+
+    public Date getNgayMuaLanDau() {
+        return ngayMuaLanDau;
+    }
+
+    public void setNgayMuaLanDau(Date ngayMuaLanDau) {
+        this.ngayMuaLanDau = ngayMuaLanDau;
+    }
+
+    
 
     
     

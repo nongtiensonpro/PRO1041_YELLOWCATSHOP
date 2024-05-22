@@ -13,7 +13,7 @@ import java.sql.Date;
 public class MauSacModel {
     private String maMauSac;
     private String tenMauSac;
-    private Boolean trangThai;
+    private boolean trangThai;
     private Date ngayTao;
     private Date ngaySua;
     private String moTa;
@@ -21,7 +21,7 @@ public class MauSacModel {
     public MauSacModel() {
     }
 
-    public MauSacModel(String maMauSac, String tenMauSac, Boolean trangThai, Date ngayTao, Date ngaySua, String moTa) {
+    public MauSacModel(String maMauSac, String tenMauSac, boolean trangThai, Date ngayTao, Date ngaySua, String moTa) {
         this.maMauSac = maMauSac;
         this.tenMauSac = tenMauSac;
         this.trangThai = trangThai;
@@ -46,11 +46,11 @@ public class MauSacModel {
         this.tenMauSac = tenMauSac;
     }
 
-    public Boolean getTrangThai() {
+    public boolean isTrangThai() {
         return trangThai;
     }
 
-    public void setTrangThai(Boolean trangThai) {
+    public void setTrangThai(boolean trangThai) {
         this.trangThai = trangThai;
     }
 
@@ -77,6 +77,8 @@ public class MauSacModel {
     public void setMoTa(String moTa) {
         this.moTa = moTa;
     }
+
+   
     
     
 }

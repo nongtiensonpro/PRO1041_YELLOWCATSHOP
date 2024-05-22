@@ -131,7 +131,6 @@ public class SizeController {
                     + "      WHERE [MaSize] = ?"
             );
             statement = connection.prepareStatement(caulenhUpdate);
-//             statement.setString(1, sModel.getMaHang());
             statement.setString(3, sModel.getMaSize());
             statement.setInt(1, sModel.getSoSize());
             statement.setString(2, sModel.getMoTa());
@@ -165,54 +164,126 @@ public class SizeController {
         }
     }
 
-    public SizeModel timKiemSizeTheoMa(String maSize) {
-
+    public List<SizeModel> timKiemSizeTheoMaSize(String masize) {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        SizeModel sizeTimThay = null;
+        SizeModel sizeModel = null;
+        List<SizeModel> listSize = new ArrayList<>();
 
         try {
             connection = DatabaseConnection.getConnection();
-            String sql = "SELECT * FROM [dbo].[Size] WHERE [MaSize] = ?";
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, maSize);
+
+            String cauLenhTimKiem = "SELECT * FROM Size WHERE MaSize = ?";
+            statement = connection.prepareStatement(cauLenhTimKiem);
+            statement.setString(1, masize);
+
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                sizeTimThay = new SizeModel();
-                sizeTimThay.setMaSize(resultSet.getString("MaSize"));
-                sizeTimThay.setSoSize(resultSet.getInt("SoSize"));
-                sizeTimThay.setMoTa(resultSet.getString("MoTa"));
+                sizeModel = new SizeModel();
+                sizeModel.setMaSize(resultSet.getString("MaSize"));
+                sizeModel.setSoSize(resultSet.getInt("SoSize"));
+                sizeModel.setMoTa(resultSet.getString("MoTa"));
+                listSize.add(sizeModel);
             }
-
+            return listSize;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            try {
-                if (resultSet != null) {
+            if (resultSet != null) {
+                try {
                     resultSet.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
             }
-            try {
-                if (statement != null) {
+            if (statement != null) {
+                try {
                     statement.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
             }
-            try {
-                if (connection != null) {
+            if (connection != null) {
+                try {
                     connection.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
             }
         }
 
-        return sizeTimThay;
+        return listSize;
     }
+    public List<SizeModel> timSizeGanDung(String masize) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<SizeModel> danhSachSize = new ArrayList<>();
 
+        try {
+            connection = DatabaseConnection.getConnection();
+            String cauLenhTimKiemSQL = "SELECT * FROM [dbo].[Size] WHERE [MaSize] LIKE ? OR SoSize Like ?";
+            statement = connection.prepareStatement(cauLenhTimKiemSQL);
+            statement.setString(1, "%" + masize + "%");
+            statement.setString(2, "%" + masize + "%");
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                SizeModel sizeNew = new SizeModel();
+                sizeNew.setMaSize(resultSet.getString("MaSize"));
+                sizeNew.setSoSize(resultSet.getInt("SoSize"));
+                sizeNew.setMoTa(resultSet.getString("MoTa"));
+                danhSachSize.add(sizeNew);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        return danhSachSize;
+    }
+    public boolean ChecktrungMa(String ma) {
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+
+            String cauLenhThem = "SELECT MaSize, COUNT(*)\n"
+                    + "FROM Size\n"
+                    + "GROUP BY Ma\n"
+                    + "HAVING COUNT(*) > 1; ";
+            statement = connection.prepareStatement(cauLenhThem);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+
+        }
+    }
 }

@@ -77,6 +77,11 @@ public class QuanLyNhanVien extends javax.swing.JPanel {
             MsgBox.alert(this, "Bạn cần email tên Nhân viên");
             return false;
         }
+        String sdt = "0[0-9]{9}";
+        if(!txtSoDienThoai.getText().matches(sdt)){
+            MsgBox.alert(this, "Bạn cần nhập đúng định dạng số điện thoại");
+            return false;
+        }
         if (txtSoDienThoai.getText().trim().equals("")) {
             MsgBox.alert(this, "Bạn cần nhập số điện thoaị Nhân viên");
             return false;
@@ -186,6 +191,8 @@ public class QuanLyNhanVien extends javax.swing.JPanel {
 
         jLabel6.setText("Ngày tạo");
 
+        txtNgayTao.setEnabled(false);
+
         jLabel7.setText("Ngày sửa");
 
         jLabel9.setText("Số điện thoại");
@@ -240,7 +247,7 @@ public class QuanLyNhanVien extends javax.swing.JPanel {
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtNgaySua, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(85, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel8.setText("Trạng thái");
@@ -320,7 +327,7 @@ public class QuanLyNhanVien extends javax.swing.JPanel {
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(90, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jButton1.setText("Thêm");
@@ -387,7 +394,7 @@ public class QuanLyNhanVien extends javax.swing.JPanel {
                     .addComponent(jButton1)
                     .addComponent(jButton2)
                     .addComponent(btnLamMoi))
-                .addContainerGap(227, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout roundPanel3Layout = new javax.swing.GroupLayout(roundPanel3);
@@ -407,11 +414,11 @@ public class QuanLyNhanVien extends javax.swing.JPanel {
             roundPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(roundPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(roundPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addGroup(roundPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tblNhanVien.setModel(new javax.swing.table.DefaultTableModel(
@@ -521,9 +528,10 @@ public class QuanLyNhanVien extends javax.swing.JPanel {
             boolean ketQua = taiKhoanNhanVienController.themTaiKhoanNhanVien(taoNhanVienMoi());
             if (ketQua) {
                 MsgBox.alert(this, "Bạn đã thêm nhân viên mới thành công");
+                listTaiKhoanNhanVien = taiKhoanNhanVienController.selectNhanVienFull("KhôngCoGiCa");
                 hienThiLenTable();
             } else {
-                MsgBox.alert(this, "Bạn đã thêm nhân viên mới thất bại");
+                MsgBox.alert(this, "Đã trùng SDT mời bạn nhập SDT khác");
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -569,6 +577,7 @@ public class QuanLyNhanVien extends javax.swing.JPanel {
         txtNgayTao.setDate(java.sql.Date.valueOf(ngaySuaLocalDate));
         txtNgaySua.setDate(java.sql.Date.valueOf(ngaySuaLocalDate));
         txtNgaySinh.setDate(java.sql.Date.valueOf(ngaySuaLocalDate));
+        txtTimKiem.setText("");
     }
 
 //    private boolean valiDate(){

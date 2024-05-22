@@ -21,6 +21,7 @@ public class ThemChatLieu extends javax.swing.JFrame {
      */
     public ThemChatLieu() {
         initComponents();
+        hienThiNgayTao();
     }
     private void hienThiNgayTao(){
         java.time.LocalDate ngaySuaLocalDate = java.time.LocalDate.now();
@@ -84,6 +85,8 @@ public class ThemChatLieu extends javax.swing.JFrame {
 
         jLabel3.setText("Ngày tạo");
 
+        txtNgayTao.setEnabled(false);
+
         jLabel4.setText("Ngày Sửa");
 
         jLabel5.setText("Trạng Thái");
@@ -101,6 +104,8 @@ public class ThemChatLieu extends javax.swing.JFrame {
                 rdKhongHoatDongActionPerformed(evt);
             }
         });
+
+        txtNgaySua.setEnabled(false);
 
         jLabel6.setText("Mô tả");
 

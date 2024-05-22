@@ -33,7 +33,7 @@ private void hienThiNgayTao(){
     public void hienThiHang() {
         txtMaHang.setText(Hang.hangstatic.getMaHang());
         txtTenHang.setText(Hang.hangstatic.getTenHang());
-        if (Hang.hangstatic.getTrangThai()) {
+        if (Hang.hangstatic.isTrangThai()) {
             rdHoatDong.setSelected(true);
         } else {
 

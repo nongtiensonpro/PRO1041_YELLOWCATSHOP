@@ -17,18 +17,18 @@ public class HangModel {
     private Date ngayTao;
     private Date ngaySua;
     private String moTa;
-    private Boolean trangThai;
+    private boolean trangThai;
 
     public HangModel() {
     }
 
-    public HangModel(String maHang, String tenHang, Boolean trangThai, Date ngayTao, Date ngaySua, String moTa) {
+    public HangModel(String maHang, String tenHang, Date ngayTao, Date ngaySua, String moTa, boolean trangThai) {
         this.maHang = maHang;
         this.tenHang = tenHang;
-        this.trangThai = trangThai;
         this.ngayTao = ngayTao;
         this.ngaySua = ngaySua;
         this.moTa = moTa;
+        this.trangThai = trangThai;
     }
 
     public String getMaHang() {
@@ -45,14 +45,6 @@ public class HangModel {
 
     public void setTenHang(String tenHang) {
         this.tenHang = tenHang;
-    }
-
-    public Boolean getTrangThai() {
-        return trangThai;
-    }
-
-    public void setTrangThai(Boolean trangThai) {
-        this.trangThai = trangThai;
     }
 
     public Date getNgayTao() {
@@ -78,6 +70,16 @@ public class HangModel {
     public void setMoTa(String moTa) {
         this.moTa = moTa;
     }
+
+    public boolean isTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(boolean trangThai) {
+        this.trangThai = trangThai;
+    }
+
+   
 
     
 

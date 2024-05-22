@@ -171,7 +171,62 @@ public class KhachHangController {
 
         return listKhanhHang;
     }
+public List<KhachHangModel> timKiemKhachHangTheoSDTTrue(String soDienThoai) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        KhachHangModel khachHangModel = null;
+        List<KhachHangModel> listKhanhHang = new ArrayList<>();
 
+        try {
+            connection = DatabaseConnection.getConnection();
+
+            String cauLenhTimKiem = "SELECT * FROM KhachHang WHERE SDT = ? AND TrangThai = 1";
+            statement = connection.prepareStatement(cauLenhTimKiem);
+            statement.setString(1, soDienThoai);
+
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                khachHangModel = new KhachHangModel();
+                khachHangModel.setMa_KhachHang(resultSet.getString("Ma_KhachHang"));
+                khachHangModel.setTenKhachHang(resultSet.getString("Ten"));
+                khachHangModel.setNgaySinh(resultSet.getDate("NgaySinh"));
+                khachHangModel.setGioiTinh(resultSet.getBoolean("GioiTinh"));
+                khachHangModel.setSoDienThoai(resultSet.getString("SDT"));
+                khachHangModel.setDiaChi(resultSet.getString("DiaChi"));
+                khachHangModel.setTrangThai(resultSet.getBoolean("TrangThai"));
+                listKhanhHang.add(khachHangModel);
+            }
+            return listKhanhHang;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        return listKhanhHang;
+    }
     public boolean themKhachHang(KhachHangModel khachHangModel) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -212,6 +267,31 @@ public class KhachHangController {
                 }
             }
         }
+    }
+    
+    public boolean ChecktrungSDT(String sdt) {
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+
+            String cauLenhThem = "SELECT SDT, COUNT(*)\n"
+                    + "FROM KhachHang\n"
+                    + "GROUP BY  SDT\n"
+                    + "HAVING COUNT(*) > 1; ";
+            statement = connection.prepareStatement(cauLenhThem);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+
+        }
+        
+        
+
     }
 
 }

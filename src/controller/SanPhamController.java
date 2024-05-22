@@ -166,7 +166,67 @@ public class SanPhamController {
 
         return sanPhamList;
     }
+public List<SanPhamModel> getAllSanPhamChiTietTrue() {
 
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<SanPhamModel> sanPhamList = new ArrayList<>();
+
+        try {
+            connection = DatabaseConnection.getConnection();
+            String sql = "SELECT * FROM [dbo].[ChiTietSanPham] WHERE TrangThai = 1";
+            statement = connection.prepareStatement(sql);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                SanPhamModel sanPhamNew = new SanPhamModel();
+                sanPhamNew.setMa_SanPhamChiTiet(resultSet.getString("Ma_SanPhamChiTiet"));
+                sanPhamNew.setMaSize(resultSet.getString("MaSize"));
+                sanPhamNew.setTen(resultSet.getString("Ten"));
+                sanPhamNew.setMaSanXuat(resultSet.getString("MaSanXuat"));
+                sanPhamNew.setMaMauSac(resultSet.getString("MaMauSac"));
+                sanPhamNew.setMaHang(resultSet.getString("MaHang"));
+                sanPhamNew.setAnhSanPham(resultSet.getBytes("AnhSanPham"));
+                sanPhamNew.setMaChatLieu(resultSet.getString("MaChatLieu"));
+                sanPhamNew.setGiaNhap(resultSet.getInt("GiaNhap"));
+                sanPhamNew.setGiaBan(resultSet.getInt("GiaBan"));
+                sanPhamNew.setSoLuong(resultSet.getInt("SoLuong"));
+                sanPhamNew.setTrangThai(resultSet.getBoolean("TrangThai"));
+                sanPhamNew.setNgayTao(resultSet.getDate("NgayTao"));
+                sanPhamNew.setNgaySua(resultSet.getDate("NgaySua"));
+                sanPhamNew.setMoTa(resultSet.getString("MoTa"));
+                sanPhamList.add(sanPhamNew);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        return sanPhamList;
+    }
     public boolean updateSanPhamChiTiet(SanPhamModel sanPhamNewInput) {
 
         Connection connection = null;
@@ -236,7 +296,8 @@ public class SanPhamController {
 
         try {
             connection = DatabaseConnection.getConnection();
-            String cauLenhTimKiemSQL = "SELECT * FROM [dbo].[ChiTietSanPham] WHERE [Ma_SanPhamChiTiet] LIKE ? OR Ten Like ?";
+//            String cauLenhTimKiemSQL = "select * from ChiTietSanPham WHERE Ma_SanPhamChiTiet like '"+maSanPhamChiTiet+"' ";
+            String cauLenhTimKiemSQL = "SELECT * FROM [dbo].[ChiTietSanPham] WHERE Ma_SanPhamChiTiet LIKE ? or Ten like ? ";
             statement = connection.prepareStatement(cauLenhTimKiemSQL);
             statement.setString(1, "%" + maSanPhamChiTiet + "%");
             statement.setString(2, "%" + maSanPhamChiTiet + "%");
@@ -261,6 +322,7 @@ public class SanPhamController {
                 sanPhamNew.setMoTa(resultSet.getString("MoTa"));
                 danhSachSanPham.add(sanPhamNew);
             }
+            return danhSachSanPham;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -390,7 +452,7 @@ public class SanPhamController {
         try {
             connection = DatabaseConnection.getConnection();
             String sql = "UPDATE [dbo].[ChiTietSanPham]\n"
-                    + "SET [SoLuong] = ? \n"
+                    + "SET [SoLuong] =  ? \n"
                     + "WHERE [Ma_SanPhamChiTiet] = ?";
             statement = connection.prepareStatement(sql);
             statement.setInt(1, sp.getSoLuong());
@@ -418,5 +480,42 @@ public class SanPhamController {
             }
         }
     }
+    public boolean ThemSoLuongSanPhamChiTiet(SanPhamModel sp) {
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = DatabaseConnection.getConnection();
+            String sql = "UPDATE [dbo].[ChiTietSanPham]\n"
+                    + "SET [SoLuong] = [SoLuong] + ? \n"
+                    + "WHERE [Ma_SanPhamChiTiet] = ?";
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, sp.getSoLuong());
+            statement.setString(2, sp.getMa_SanPhamChiTiet());
+            statement.executeUpdate();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
+
 
 }

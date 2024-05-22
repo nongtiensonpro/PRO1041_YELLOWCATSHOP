@@ -106,7 +106,13 @@ public class PdfPrinter {
             discountTotal.setAlignment(Element.ALIGN_CENTER); // Canh giữa
             document.add(discountTotal);
             document.add(new Paragraph(" "));
-
+            Paragraph ghiChu = new Paragraph();
+            if(hoaDonModel.getGhiChu().trim().equals("")==false){
+                System.out.println("MeoMeo");
+                ghiChu.add(new Paragraph("Ghi chú : " + hoaDonModel.getGhiChu(),vietnameseFont));
+                document.add(ghiChu);
+                document.add(new Paragraph(" "));
+            }
             // Chân trang
             Paragraph footer = new Paragraph();
             footer.add(new Paragraph("Cảm ơn quý khách và hẹn gặp lại!", vietnameseFont));

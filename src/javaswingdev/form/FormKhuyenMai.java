@@ -5,6 +5,10 @@
 package javaswingdev.form;
 
 import controller.KhuyenMaiController;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import model.KhuyenMai;
@@ -15,28 +19,46 @@ import utilities.MsgBox;
  * @author Khanh
  */
 public class FormKhuyenMai extends javax.swing.JPanel {
+
     KhuyenMaiController khuyenMaiController = new KhuyenMaiController();
-    List<KhuyenMai> danhSachkhuyenmai =  khuyenMaiController.timKiemTatCaKuyenMai();
+    List<KhuyenMai> danhSachkhuyenmai = khuyenMaiController.timKiemTatCaKuyenMai();
+
     /**
      * Creates new form FormKhuyenMai
      */
     public FormKhuyenMai() {
         initComponents();
         loadFormKhuyenMai();
+        capNhatKhuyenMai();
     }
-    private void loadFormKhuyenMai(){
+
+    private void capNhatKhuyenMai() {
+        List<KhuyenMai> listKhuyenMai = khuyenMaiController.timKiemTatCaKuyenMai();
+        Date ngayHienTai = new Date(System.currentTimeMillis());
+
+        for (KhuyenMai khuyenMai : listKhuyenMai) {
+            Date ngayKetThuc = khuyenMai.getNgayKetThuc();
+
+            if (ngayHienTai.before(ngayKetThuc)) {
+                khuyenMai.setTrangThai(false);
+                khuyenMaiController.capNhatThongTinKhuyenMai(khuyenMai);
+            }
+        }
+    }
+
+    private void loadFormKhuyenMai() {
         DefaultTableModel dtm = (DefaultTableModel) tblBangkhuyenmai.getModel();
         dtm.setRowCount(0);
-        
+
         for (KhuyenMai khyenMai : danhSachkhuyenmai) {
             dtm.addRow(new Object[]{
                 khyenMai.getMaKhuyenMai(),
                 khyenMai.getTenKhuyenMai(),
                 khyenMai.getGiaTri(),
-                khyenMai.isLoaiKhuyenMai()?"Tiền mặt" : "Phần trăm",
+                //                khyenMai.isLoaiKhuyenMai()?"Tiền mặt" : "Phần trăm",
                 khyenMai.getNgayBatDau(),
                 khyenMai.getNgayKetThuc(),
-                khyenMai.isTrangThai()?"Còn khuyến mại" : "Hết khuyến mại"
+                khyenMai.isTrangThai() ? "Còn khuyến mại" : "Hết khuyến mại"
             });
         }
     }
@@ -61,9 +83,6 @@ public class FormKhuyenMai extends javax.swing.JPanel {
         txtTenkhuyenmai = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         txtGiaTri = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        rdoTienmat = new javax.swing.JRadioButton();
-        rdoPhantram = new javax.swing.JRadioButton();
         jLabel6 = new javax.swing.JLabel();
         txtNgaybatdau = new com.toedter.calendar.JDateChooser();
         jLabel7 = new javax.swing.JLabel();
@@ -103,17 +122,11 @@ public class FormKhuyenMai extends javax.swing.JPanel {
 
         jLabel2.setText("Mã khuyến mãi");
 
+        txtMakhuyenmai.setEnabled(false);
+
         jLabel3.setText("Tên khuyến mãi");
 
         jLabel4.setText("Giá trị");
-
-        jLabel5.setText("Loại khuyến mãi");
-
-        buttonGroup1.add(rdoTienmat);
-        rdoTienmat.setText("Tiền mặt");
-
-        buttonGroup1.add(rdoPhantram);
-        rdoPhantram.setText("Phần trăm");
 
         jLabel6.setText("Ngày bắt đầu");
 
@@ -133,45 +146,39 @@ public class FormKhuyenMai extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtMakhuyenmai, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtGiaTri))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNgaybatdau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(101, 101, 101)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rdoConkhuyenmai)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(rdoHetkhuyenmai))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtMakhuyenmai, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtGiaTri))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtNgaybatdau, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(101, 101, 101)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(54, 54, 54)
-                                .addComponent(rdoTienmat)
-                                .addGap(45, 45, 45)
-                                .addComponent(rdoPhantram))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(txtTenkhuyenmai, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtNgayketthuc, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(txtNgayketthuc, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(rdoConkhuyenmai)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(rdoHetkhuyenmai))
+                                    .addComponent(txtTenkhuyenmai, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,12 +189,14 @@ public class FormKhuyenMai extends javax.swing.JPanel {
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTenkhuyenmai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtGiaTri, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rdoTienmat)
-                    .addComponent(rdoPhantram))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtGiaTri, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(rdoConkhuyenmai)
+                        .addComponent(rdoHetkhuyenmai)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -197,12 +206,7 @@ public class FormKhuyenMai extends javax.swing.JPanel {
                         .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtNgaybatdau, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(txtNgayketthuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rdoConkhuyenmai)
-                    .addComponent(rdoHetkhuyenmai))
-                .addGap(0, 16, Short.MAX_VALUE))
+                .addGap(0, 51, Short.MAX_VALUE))
         );
 
         jButton1.setText("Thêm");
@@ -265,13 +269,13 @@ public class FormKhuyenMai extends javax.swing.JPanel {
 
         tblBangkhuyenmai.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Mã khuyến mại", "Tên khuyến mại", "Giá trị", "Loại khuến mại", "Ngày bắt đầu", "Ngày kết thúc", "Trạng thái"
+                "Mã khuyến mại", "Tên khuyến mại", "Giá trị", "Ngày bắt đầu", "Ngày kết thúc", "Trạng thái"
             }
         ));
         tblBangkhuyenmai.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -323,135 +327,164 @@ public class FormKhuyenMai extends javax.swing.JPanel {
 
     private void tblBangkhuyenmaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBangkhuyenmaiMouseClicked
         // TODO add your handling code here:
-        if(tblBangkhuyenmai.getSelectedRow() > -1){
+        if (tblBangkhuyenmai.getSelectedRow() > -1) {
             KhuyenMai khuyenMai = khuyenMaiController.timKiemTatCaKuyenMai().get(tblBangkhuyenmai.getSelectedRow());
-       txtMakhuyenmai.setText(khuyenMai.getMaKhuyenMai());
-       txtTenkhuyenmai.setText(khuyenMai.getTenKhuyenMai());
-       txtGiaTri.setText(String.valueOf(khuyenMai.getGiaTri()));
-       txtNgaybatdau.setDate(khuyenMai.getNgayBatDau());
-       txtNgayketthuc.setDate(khuyenMai.getNgayKetThuc());
-       if(khuyenMai.isLoaiKhuyenMai()){
-           rdoPhantram.setSelected(true);
-       }else{
-           rdoTienmat.setSelected(true);
-       }
-       if(khuyenMai.isTrangThai()){
-           rdoConkhuyenmai.setSelected(true);
-       }else{
-           rdoHetkhuyenmai.setSelected(true);
-       }
+            txtMakhuyenmai.setText(khuyenMai.getMaKhuyenMai());
+            txtTenkhuyenmai.setText(khuyenMai.getTenKhuyenMai());
+            txtGiaTri.setText(String.valueOf(khuyenMai.getGiaTri()));
+            txtNgaybatdau.setDate(khuyenMai.getNgayBatDau());
+            txtNgayketthuc.setDate(khuyenMai.getNgayKetThuc());
+//       if(khuyenMai.isLoaiKhuyenMai()){
+//           rdoPhantram.setSelected(true);
+//       }else{
+//           rdoTienmat.setSelected(true);
+//       }
+            if (khuyenMai.isTrangThai()) {
+                rdoConkhuyenmai.setSelected(true);
+            } else {
+                rdoHetkhuyenmai.setSelected(true);
+            }
         }
     }//GEN-LAST:event_tblBangkhuyenmaiMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if(checktrong()){
+        if (checktrong()) {
             boolean ketqua = khuyenMaiController.themKhuyenMai(taodulieumoi());
-            if(ketqua){
+            if (ketqua) {
                 MsgBox.alert(this, "Bạn đã thêm khuyến mãi thành công");
+                danhSachkhuyenmai = khuyenMaiController.timKiemTatCaKuyenMai();
                 loadFormKhuyenMai();
-            }else{
-                MsgBox.alert(this, "Bạn đã thêm khuyến mãi thất bại");
+            } else {
+                MsgBox.alert(this, "Đã trùng mã mời bạn nhập mã khác");
             }
-            
+
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        if(tblBangkhuyenmai.getSelectedRow()>-1){
+        if (tblBangkhuyenmai.getSelectedRow() > -1) {
             boolean luachon = MsgBox.confirm(this, "Bạn có muốn sửa không");
-            if(luachon){
-                boolean ketqua = khuyenMaiController.capNhatThongTinKhuyenMai(taodulieumoi());
-                if(ketqua){
+            if (luachon) {
+                boolean ketqua = khuyenMaiController.capNhatThongTinKhuyenMai(taodulieumoi2());
+                if (ketqua) {
                     MsgBox.alert(this, "Bạn đã sửa thành công");
                     danhSachkhuyenmai = khuyenMaiController.timKiemTatCaKuyenMai();
                     loadFormKhuyenMai();
-                }else{
+                } else {
                     MsgBox.alert(this, "Bạn đã sửa không thành công");
                 }
             }
+        } else {
+            MsgBox.alert(this, "Mời bạn chọn dòng cần sửa");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnTimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimActionPerformed
         // TODO add your handling code here:
-        if(txtTimkhuyenmai.getText().trim().equals("")){
-            
-        }else{
+        if (txtTimkhuyenmai.getText().trim().equals("")) {
+            MsgBox.alert(this, "Mời bạn nhập mã khuyến mãi");
+        } else {
             danhSachkhuyenmai = khuyenMaiController.timKiemKhuyenMaitheoMa(txtTimkhuyenmai.getText());
             loadFormKhuyenMai();
         }
     }//GEN-LAST:event_btnTimActionPerformed
-private void lamMoiTextField(){
-    txtGiaTri.setText("");
-    txtMakhuyenmai.setText("");
-    txtTenkhuyenmai.setText("");
-    java.time.LocalDate ngaySuaLocalDate = java.time.LocalDate.now();
+    private void lamMoiTextField() {
+        txtMakhuyenmai.setText("");
+        txtGiaTri.setText("");
+        txtMakhuyenmai.setText("");
+        txtTenkhuyenmai.setText("");
+        txtTimkhuyenmai.setText("");
+        java.time.LocalDate ngaySuaLocalDate = java.time.LocalDate.now();
         txtNgaybatdau.setDate(java.sql.Date.valueOf(ngaySuaLocalDate));
         txtNgayketthuc.setDate(java.sql.Date.valueOf(ngaySuaLocalDate));
-}
+        danhSachkhuyenmai = khuyenMaiController.timKiemTatCaKuyenMai();
+        loadFormKhuyenMai();
+    }
     private void btnLammoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLammoiActionPerformed
         // TODO add your handling code here:
         lamMoiTextField();
-        
+        capNhatKhuyenMai();
     }//GEN-LAST:event_btnLammoiActionPerformed
-private KhuyenMai taodulieumoi(){
-    KhuyenMai khuyenMai = new KhuyenMai();
-    khuyenMai.setMaKhuyenMai(txtMakhuyenmai.getText());
-    khuyenMai.setTenKhuyenMai(txtTenkhuyenmai.getText());
-    khuyenMai.setGiaTri(Integer.valueOf(txtGiaTri.getText()));
-    khuyenMai.setLoaiKhuyenMai(rdoPhantram.isSelected());
-    khuyenMai.setTrangThai(rdoConkhuyenmai.isSelected());
-    java.util.Date utilDate = txtNgaybatdau.getCalendar().getTime(); // Lấy đối tượng java.util.Date
+    private KhuyenMai taodulieumoi() {
+        KhuyenMai khuyenMai = new KhuyenMai();
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("ssmmHHddMMyyyy");
+        String formattedTime = formatter.format(currentTime);
+        khuyenMai.setMaKhuyenMai("KM" + formattedTime);
+        khuyenMai.setTenKhuyenMai(txtTenkhuyenmai.getText());
+        khuyenMai.setGiaTri(Integer.valueOf(txtGiaTri.getText()));
+//    khuyenMai.setLoaiKhuyenMai(rdoPhantram.isSelected());
+        khuyenMai.setTrangThai(rdoConkhuyenmai.isSelected());
+        java.util.Date utilDate = txtNgaybatdau.getCalendar().getTime(); // Lấy đối tượng java.util.Date
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime()); // Chuyển đổi sang java.sql.Date
         khuyenMai.setNgayBatDau(sqlDate);
-    
+
         java.util.Date utilDatee = txtNgayketthuc.getCalendar().getTime(); // Lấy đối tượng java.util.Date
         java.sql.Date sqlDatee = new java.sql.Date(utilDate.getTime()); // Chuyển đổi sang java.sql.Date
         khuyenMai.setNgayKetThuc(sqlDate);
-        
+
         return khuyenMai;
-}
-public Boolean checktrong(){
-    if (txtMakhuyenmai.getText().trim().equals("")) {
-            MsgBox.alert(this, "Bạn cần nhập Mã khuyến mại");
-            return false;
-        }
+    }
+
+    private KhuyenMai taodulieumoi2() {
+        KhuyenMai khuyenMai = new KhuyenMai();
+        khuyenMai.setMaKhuyenMai(txtMakhuyenmai.getText());
+        khuyenMai.setTenKhuyenMai(txtTenkhuyenmai.getText());
+        khuyenMai.setGiaTri(Integer.valueOf(txtGiaTri.getText()));
+//    khuyenMai.setLoaiKhuyenMai(rdoPhantram.isSelected());
+        khuyenMai.setTrangThai(rdoConkhuyenmai.isSelected());
+        java.util.Date utilDate = txtNgaybatdau.getCalendar().getTime(); // Lấy đối tượng java.util.Date
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime()); // Chuyển đổi sang java.sql.Date
+        khuyenMai.setNgayBatDau(sqlDate);
+
+        java.util.Date utilDatee = txtNgayketthuc.getCalendar().getTime(); // Lấy đối tượng java.util.Date
+        java.sql.Date sqlDatee = new java.sql.Date(utilDate.getTime()); // Chuyển đổi sang java.sql.Date
+        khuyenMai.setNgayKetThuc(sqlDate);
+
+        return khuyenMai;
+    }
+
+    public Boolean checktrong() {
+//    if (txtMakhuyenmai.getText().trim().equals("")) {
+//            MsgBox.alert(this, "Bạn cần nhập Mã khuyến mãi");
+//            return false;
+//        }
         if (txtTenkhuyenmai.getText().trim().equals("")) {
-            MsgBox.alert(this, "Bạn cần nhập Tên khách hàng");
+            MsgBox.alert(this, "Bạn cần nhập Tên khuyến mãi");
             return false;
         }
         if (txtGiaTri.getText().trim().equals("")) {
             MsgBox.alert(this, "Bạn cần nhập giá trị");
             return false;
         }
-        if(rdoConkhuyenmai.isSelected()==false && rdoHetkhuyenmai.isSelected()==false){
+        if (rdoConkhuyenmai.isSelected() == false && rdoHetkhuyenmai.isSelected() == false) {
             MsgBox.alert(this, "Bạn cần nhập trạng thái");
             return false;
         }
-        if(rdoPhantram.isSelected()==false && rdoTienmat.isSelected()==false){
-            MsgBox.alert(this, "Bạn cần nhập loại khyến mại");
+//        if(rdoPhantram.isSelected()==false && rdoTienmat.isSelected()==false){
+//            MsgBox.alert(this, "Bạn cần nhập loại khyến mại");
+//            return false;
+//        }
+        try {
+            java.util.Date utilDate = txtNgaybatdau.getCalendar().getTime(); // Lấy đối tượng java.util.Date
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime()); // Chuyển đổi sang java.sql.Date
+
+        } catch (Exception e) {
+            MsgBox.alert(this, "Bạn cần nhập ngày bắt đầu");
             return false;
         }
-       try {
-        java.util.Date utilDate = txtNgaybatdau.getCalendar().getTime(); // Lấy đối tượng java.util.Date
-        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime()); // Chuyển đổi sang java.sql.Date
-       
-    } catch (Exception e) {
-        MsgBox.alert(this, "Bạn cần nhập ngày bắt đầu");
+        try {
+            java.util.Date utilDate = txtNgayketthuc.getCalendar().getTime(); // Lấy đối tượng java.util.Date
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime()); // Chuyển đổi sang java.sql.Date
+
+        } catch (Exception e) {
+            MsgBox.alert(this, "Bạn cần nhập ngày kết thúc");
             return false;
-    }
-       try {
-        java.util.Date utilDate = txtNgayketthuc.getCalendar().getTime(); // Lấy đối tượng java.util.Date
-        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime()); // Chuyển đổi sang java.sql.Date
-       
-    } catch (Exception e) {
-        MsgBox.alert(this, "Bạn cần nhập ngày kết thúc");
-            return false;
-    }
+        }
         return true;
-}
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLammoi;
@@ -464,7 +497,6 @@ public Boolean checktrong(){
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -475,8 +507,6 @@ public Boolean checktrong(){
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton rdoConkhuyenmai;
     private javax.swing.JRadioButton rdoHetkhuyenmai;
-    private javax.swing.JRadioButton rdoPhantram;
-    private javax.swing.JRadioButton rdoTienmat;
     private javaswingdev.swing.table.Table tblBangkhuyenmai;
     private javax.swing.JTextField txtGiaTri;
     private javax.swing.JTextField txtMakhuyenmai;

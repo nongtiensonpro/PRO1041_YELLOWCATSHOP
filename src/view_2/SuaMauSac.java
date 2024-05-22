@@ -31,7 +31,7 @@ public class SuaMauSac extends javax.swing.JFrame {
     public void hienThiMauSac(){
         txtMaMauSac.setText(MauSac.mauSacstatic.getMaMauSac());
         txtTenMauSac.setText(MauSac.mauSacstatic.getTenMauSac());
-        if (MauSac.mauSacstatic.getTrangThai()) {
+        if (MauSac.mauSacstatic.isTrangThai()) {
             rdHoatDong.setSelected(true);
         } else {
 

@@ -123,7 +123,7 @@ public class SuaSanPhamJFrame extends javax.swing.JFrame {
             int khaDung = 0;
             int khongKhaDung = 0;
             for (HangModel hangModel : danhSachHang) {
-                if (hangModel.getTrangThai()) {
+                if (hangModel.isTrangThai()) {
                     khaDung++;
                 } else {
                     khongKhaDung++;
@@ -143,7 +143,7 @@ public class SuaSanPhamJFrame extends javax.swing.JFrame {
             int khaDung = 0;
             int khongKhaDung = 0;
             for (NhaSanXuatModel nhaSanXuatModel : listNhaSanXuat) {
-                if (nhaSanXuatModel.getTrangThai()) {
+                if (nhaSanXuatModel.isTrangThai()) {
                     khaDung++;
                 } else {
                     khongKhaDung++;
@@ -163,7 +163,7 @@ public class SuaSanPhamJFrame extends javax.swing.JFrame {
             int khaDung = 0;
             int khongKhaDung = 0;
             for (MauSacModel mauSacModel : listMauSac) {
-                if (mauSacModel.getTrangThai()) {
+                if (mauSacModel.isTrangThai()) {
                     khaDung++;
                 } else {
                     khongKhaDung++;
@@ -765,8 +765,8 @@ public class SuaSanPhamJFrame extends javax.swing.JFrame {
         } else {
             rdoKhongHoatDong.setSelected(true);
         }
-        cboMaSize.setSelectedItem(sanPhamNewStatic.getMaSize() + " " + sizeController.timKiemSizeTheoMa(sanPhamNewStatic.getMaSize()).getMoTa());
-        cboChatLieu.setSelectedItem(sanPhamNewStatic.getMaChatLieu() + " " + chatLieuController.timKiemChatLieuTheoMa(sanPhamNewStatic.getMaChatLieu()).getTen());
+//        cboMaSize.setSelectedItem(sanPhamNewStatic.getMaSize() + " " + sizeController.timKiemSizeTheoMa(sanPhamNewStatic.getMaSize()).getMoTa());
+//        cboChatLieu.setSelectedItem(sanPhamNewStatic.getMaChatLieu() + " " + chatLieuController.timKiemChatLieuTheoMa(sanPhamNewStatic.getMaChatLieu()).getTen());
         cboNhaSanXuat.setSelectedItem(sanPhamNewStatic.getMaSanXuat() + " " + nhaSanXuatController.timKiemNSXTheoMa(sanPhamNewStatic.getMaSanXuat()).get(0).getTenNSX() + " " + nhaSanXuatController.timKiemNSXTheoMa(sanPhamNewStatic.getMaSanXuat()).get(0).getQuocGia());
         txtNgayTao.setDate(sanPhamNewStatic.getNgayTao());
         txtSoLuong.setText(String.valueOf(sanPhamNewStatic.getSoLuong()));

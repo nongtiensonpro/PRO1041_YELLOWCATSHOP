@@ -92,6 +92,7 @@ public class KhuyenMaiController {
             statement.setBoolean(6, khachHangModel.isTrangThai());
             statement.setString(7, khachHangModel.getMaKhuyenMai());
 
+            System.out.println(khachHangModel.getMaKhuyenMai());
             int rowsAffected = statement.executeUpdate();
 
             return rowsAffected > 0;
@@ -168,15 +169,18 @@ public class KhuyenMaiController {
         try {
             connection = DatabaseConnection.getConnection();
 
-            String cauLenhTimKiem = "SELECT * FROM KhuyenMai WHERE MaKhuyenMai = ?";
+            String cauLenhTimKiem = "SELECT * FROM KhuyenMai WHERE MaKhuyenMai like ? or TenKhuyenMai like ?";
             statement = connection.prepareStatement(cauLenhTimKiem);
-            statement.setString(1, maKhuyenMai);
+            statement.setString(1, "%" + maKhuyenMai + "%");
+            statement.setString(2, "%" + maKhuyenMai + "%");
+            resultSet = statement.executeQuery();
 
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
                 khachHangModel = new KhuyenMai();
                 
+                khachHangModel.setMaKhuyenMai(resultSet.getString("MaKhuyenMai"));
                 khachHangModel.setTenKhuyenMai(resultSet.getString("TenKhuyenMai"));
                 khachHangModel.setGiaTri(resultSet.getInt("GiaTri"));
                 khachHangModel.setLoaiKhuyenMai(resultSet.getBoolean("LoaiKhuyenMai"));
